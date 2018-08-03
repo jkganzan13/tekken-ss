@@ -10,16 +10,30 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import CHARACTERS from 'constants/characters';
+import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class HomePage extends React.PureComponent {
+  renderImage = ({ name, img }) => (
+    <Styled.ImgContainer>
+      <Styled.ImgText>{name}</Styled.ImgText>
+      <Styled.Img src={img} />
+    </Styled.ImgContainer>
+  );
+
+  renderRows = char => (
+    <Styled.Row key={char.key}>
+      {this.renderImage(char)}
+      {char.ss}
+    </Styled.Row>
+  );
+
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <Styled.Container>
+        {CHARACTERS.map(this.renderRows)}
+      </Styled.Container>
     );
   }
 }
