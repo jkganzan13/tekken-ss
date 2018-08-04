@@ -15,16 +15,18 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import Banner from 'components/Banner';
+import NotFoundPage from 'containers/NotFoundPage';
+import Sidestep from 'containers/Sidestep';
+import AppNav from 'components/AppNav';
 
 export default function App() {
   return (
     <div>
-      <Banner />
+      <AppNav />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
+        <Route exact path="/ss" component={Sidestep} />
+        <Route component={HomePage} />
       </Switch>
     </div>
   );
