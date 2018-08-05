@@ -17,6 +17,7 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage';
 import Sidestep from 'containers/Sidestep';
+import Combos from 'containers/Combos';
 import AppNav from 'components/AppNav';
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/ss" component={Sidestep} />
+        <Route exact path="/combos" component={Combos} />
         <Route component={HomePage} />
       </Switch>
     </div>
