@@ -13,6 +13,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 
 import injectReducer from 'utils/injectReducer';
 import Combo from 'components/Combo';
+import ComboForm from 'components/ComboForm';
+
 import makeSelectCombos from './selectors';
 import reducer from './reducer';
 
@@ -45,6 +47,7 @@ export class Combos extends React.Component {
     return (
       <div className="container">
         <BootstrapTable keyField="id" data={COMBOS} columns={COLUMNS} />
+        <ComboForm />
       </div>
     );
   }
