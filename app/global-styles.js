@@ -29,7 +29,7 @@ injectGlobal`
   }
   
   .isvg.loaded svg {
-    width: 40px;
+    width: 30px;
   }
 
   .isvg.loaded.separator svg {
