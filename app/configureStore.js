@@ -6,9 +6,21 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import { reduxFirestore } from 'redux-firestore';
+import { reduxFirebase } from 'react-redux-firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/firestore';
+
 import createReducer from './reducers';
+import * as config from './config';
 
 const sagaMiddleware = createSagaMiddleware();
+
+// Firebase
+firebase.initializeApp(config.firebaseConfig);
+firebase.firestore().settings(config.firebaseSettings);
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -32,7 +44,12 @@ export default function configureStore(initialState = {}, history) {
       : compose;
   /* eslint-enable */
 
-  const store = createStore(
+  const createStoreWithFirebase = compose(
+    reduxFirebase(firebase, config.reduxFirebaseConfig),
+    reduxFirestore(firebase, config.reduxFirebaseConfig),
+  )(createStore);
+
+  const store = createStoreWithFirebase(
     createReducer(),
     fromJS(initialState),
     composeEnhancers(...enhancers),

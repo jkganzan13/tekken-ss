@@ -17,7 +17,7 @@ function AppNav(props) {
   return (
     <Navbar>
       <Styled.Logo src={img} />
-      <Nav>{ROUTES.map(route => <NavLink {...props} {...route} />)}</Nav>
+      <Nav>{ROUTES.map(route => <NavLink key={route.name} {...props} {...route} />)}</Nav>
     </Navbar>
   );
 }

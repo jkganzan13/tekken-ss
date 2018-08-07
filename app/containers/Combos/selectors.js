@@ -1,11 +1,15 @@
 import { createSelector } from 'reselect';
+import R from 'ramda';
+import { fromJS } from 'immutable';
+import { mapObject } from 'utils/firebase';
 import { initialState } from './reducer';
 
 /**
  * Direct selector to the combos state domain
  */
 
-const selectCombosDomain = state => state.get('combos', initialState);
+const selectCombosDomain = state =>
+  fromJS(R.pathOr(initialState, ['data', 'combos'], state.get('firestore')));
 
 /**
  * Other specific selectors
@@ -15,8 +19,7 @@ const selectCombosDomain = state => state.get('combos', initialState);
  * Default selector used by Combos
  */
 
-const makeSelectCombos = () =>
-  createSelector(selectCombosDomain, substate => substate.toJS());
+const makeSelectCombos = () => createSelector(selectCombosDomain, substate => mapObject(substate.toJS()));
 
 export default makeSelectCombos;
 export { selectCombosDomain };
