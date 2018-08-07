@@ -24,3 +24,10 @@ cache:
   yarn: true
   directories:
     - node_modules
+
+deploy:
+  provider: firebase
+  token:
+    secure: $firebaseToken
+  on:
+    branch: master
