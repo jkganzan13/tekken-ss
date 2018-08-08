@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const logger = require('../../server/logger');
+const Dotenv = require('dotenv-webpack');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 const { dllPlugin } = pkg;
 
@@ -23,6 +24,8 @@ const plugins = [
     exclude: /a\.js|node_modules/, // exclude node_modules
     failOnError: false, // show a warning when there is a circular dependency
   }),
+  // Load environment variables from .env file
+  new Dotenv(),
 ];
 
 if (dllPlugin) {
@@ -65,6 +68,11 @@ module.exports = require('./webpack.base.babel')({
 
   performance: {
     hints: false,
+  },
+
+  // For dotenv-webpack
+  node: {
+    fs: 'empty',
   },
 });
 
