@@ -14,5 +14,3 @@ export const reduxFirebaseConfig = {
 export const firebaseSettings = {
   timestampsInSnapshots: true,
 };
-
-console.log('test', process.env.AUTH_DOMAIN, process.env.PROJECT_ID)

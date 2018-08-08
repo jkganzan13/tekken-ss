@@ -1,12 +1,11 @@
 language: node_js
 
 node_js:
-  - 9
   - 8
 
 script:
-  - node ./internals/scripts/generate-templates-for-linting
-  - npm test -- --maxWorkers=4
+  # - node ./internals/scripts/generate-templates-for-linting
+  # - npm test -- --maxWorkers=4
   - npm run build
 
 before_install:
@@ -26,6 +25,7 @@ cache:
     - node_modules
 
 deploy:
+  skip_cleanup: true
   provider: firebase
   token:
     secure: $firebaseToken
