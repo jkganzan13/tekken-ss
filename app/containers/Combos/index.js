@@ -62,7 +62,6 @@ export class Combos extends React.Component {
 }
 
 Combos.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   combos: PropTypes.array.isRequired,
 };
 

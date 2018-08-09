@@ -3,6 +3,7 @@ const DIRECTION = {
   RIGHT: 'Right',
 };
 
+/* eslint-disable global-require */
 export default [
   {
     key: 'akuma',

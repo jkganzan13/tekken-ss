@@ -19,7 +19,8 @@ const selectCombosDomain = state =>
  * Default selector used by Combos
  */
 
-const makeSelectCombos = () => createSelector(selectCombosDomain, substate => mapObject(substate.toJS()));
+const makeSelectCombos = () =>
+  createSelector(selectCombosDomain, substate => mapObject(substate.toJS()));
 
 export default makeSelectCombos;
 export { selectCombosDomain };

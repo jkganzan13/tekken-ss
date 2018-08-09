@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -47,9 +46,7 @@ export class Sidestep extends React.Component {
   }
 }
 
-Sidestep.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+Sidestep.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   sidestep: makeSelectSidestep(),

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import * as Styled from './Styled';
 
 const NavLink = ({ location, to, name }) => (
   <li className={location.pathname === to ? 'active' : ''}>

@@ -30,16 +30,16 @@ const splitButtonsAndArrows = move =>
     .filter(s => !!s.trim());
 
 const splitToSingleButton = buttons =>
-  buttons.map(button => {
-    return button.reduce((acc, move) => {
+  buttons.map(button =>
+    button.reduce((acc, move) => {
       if (ARROW_BTN_REGEX.test(move)) {
         const moves = splitButtonsAndArrows(move);
         return [...acc, ...moves];
       }
       acc.push(move);
       return acc;
-    }, []);
-  });
+    }, []),
+  );
 
 const getIcon = button => {
   if (ARROW_KEYS.includes(button)) {

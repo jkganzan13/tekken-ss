@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  background: transparent;
 `;
 
 export const Row = styled.tr`
+  background: transparent;
 `;
 
 export const TdFit = styled.td`
