@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import R from 'ramda';
 import { fromJS } from 'immutable';
-import { mapObject } from 'utils/firebase';
+import { mapObject } from 'utils/firestore';
 import { initialState } from './reducer';
 
 /**

@@ -4,7 +4,7 @@ const DIRECTION = {
 };
 
 /* eslint-disable global-require */
-export default [
+const CHARACTERS = [
   {
     key: 'akuma',
     name: 'Akuma',
@@ -216,3 +216,6 @@ export default [
     ss: DIRECTION.LEFT,
   },
 ];
+
+export const CHARACTER_NAMES = CHARACTERS.map(c => c.name);
+export default CHARACTERS;

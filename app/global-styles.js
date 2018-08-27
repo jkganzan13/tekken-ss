@@ -36,4 +36,13 @@ injectGlobal`
     width: 10px;
     margin-left: 10px;
   }
+
+  .react-rater-star {
+    font-size: 20px;
+  }
+
+  .react-rater-star.is-active,
+  .react-rater-star.is-active-half:before {
+    color: #fc6;
+  }
 `;

@@ -4,4 +4,8 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Combos/DEFAULT_ACTION';
+// Action constants
+export const ADD_COMBO = 'app/Combos/ADD_COMBO';
+
+// Constants
+export const FIRESTORE_PATH = 'combos';

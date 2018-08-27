@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Form } from 'react-bootstrap';
 
 export const Container = styled.div`
   border: 1px solid lightgrey;
@@ -18,6 +19,12 @@ export const ComboContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-export const ButtonContainer = styled.div`
+export const TextContainer = styled.div`
   margin-top: 10px;
+`;
+
+export const StyledForm = styled(Form)`
+  > * {
+    margin-right: 10px;
+  }
 `;

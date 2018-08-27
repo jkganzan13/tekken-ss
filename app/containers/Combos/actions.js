@@ -3,11 +3,18 @@
  * Combos actions
  *
  */
+import { addFirestore } from 'utils/firestore';
+import { ADD_COMBO, FIRESTORE_PATH } from './constants';
 
-import { DEFAULT_ACTION } from './constants';
+export const addCombo = newCombo => {
+  addFirestore(FIRESTORE_PATH, {
+    ...newCombo,
+    rating: 0,
+    timestamp: new Date().getTime(),
+  });
 
-export function defaultAction() {
   return {
-    type: DEFAULT_ACTION,
+    type: ADD_COMBO,
+    payload: newCombo,
   };
-}
+};

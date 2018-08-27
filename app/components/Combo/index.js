@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import R from 'ramda';
+import uuidv4 from 'uuid/v4';
 import {
   ARROWS,
   BUTTONS,
@@ -48,7 +49,7 @@ const getIcon = button => {
   if (BUTTONS_KEYS.includes(button)) {
     return BUTTONS[button];
   }
-  return <Styled.Text>{button}</Styled.Text>;
+  return <Styled.Text key={uuidv4()}>{button}</Styled.Text>;
 };
 
 const renderButtons = (buttons, index, array) => {
@@ -65,10 +66,9 @@ const convertCombo = (combo = '') => {
   return singleButtons.map(renderButtons);
 };
 
-const Combo = ({ id, combo }) => <div key={id}>{convertCombo(combo)}</div>;
+const Combo = ({ combo }) => <div key={uuidv4()}>{convertCombo(combo)}</div>;
 
 Combo.propTypes = {
-  id: PropTypes.string,
   combo: PropTypes.string,
 };
 

@@ -8,16 +8,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { firestoreConnect } from 'react-redux-firebase';
+import Rater from 'react-rater';
 
 import injectReducer from 'utils/injectReducer';
 import Combo from 'components/Combo';
 import ComboForm from 'components/ComboForm';
 
+import { FIRESTORE_PATH } from './constants';
 import makeSelectCombos from './selectors';
 import reducer from './reducer';
+import * as actions from './actions';
 
 const COLUMNS = [
   {
@@ -40,29 +43,28 @@ const COLUMNS = [
   {
     dataField: 'rating',
     text: 'Rating',
+    formatter: (cell, row) => (
+      <Rater total={5} rating={row.rating} interactive={false} />
+    ),
     headerClasses: 'col-md-2',
   },
 ];
 
-/* eslint-disable react/prefer-stateless-function */
-export class Combos extends React.Component {
-  render() {
-    return (
-      <div className="container">
-        <BootstrapTable
-          keyField="id"
-          data={this.props.combos}
-          columns={COLUMNS}
-          noDataIndication="Loading"
-        />
-        <ComboForm />
-      </div>
-    );
-  }
-}
+const Combos = props => (
+  <div className="container">
+    <BootstrapTable
+      keyField="id"
+      data={props.combos}
+      columns={COLUMNS}
+      noDataIndication="Loading"
+    />
+    <ComboForm onSubmit={props.actions.addCombo} />
+  </div>
+);
 
 Combos.propTypes = {
   combos: PropTypes.array.isRequired,
+  actions: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -71,7 +73,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    actions: bindActionCreators(actions, dispatch),
   };
 }
 
@@ -85,5 +87,5 @@ const withReducer = injectReducer({ key: 'combos', reducer });
 export default compose(
   withReducer,
   withConnect,
-  firestoreConnect(['combos']),
+  firestoreConnect([FIRESTORE_PATH]),
 )(Combos);
