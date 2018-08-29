@@ -12,17 +12,27 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from 'containers/HomePage/Loadable';
 import Sidestep from 'containers/Sidestep';
 import Combos from 'containers/Combos';
 import AppNav from 'components/AppNav';
+import { firebaseConnect } from 'react-redux-firebase';
+import { makeSelectFirebaseAuth, makeSelectFirebaseProfile } from './selectors';
 
-export default function App() {
+function App(props) {
   return (
     <div>
-      <AppNav />
+      <AppNav
+        firebase={props.firebase}
+        auth={props.auth}
+        profile={props.profile}
+      />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/ss" component={Sidestep} />
@@ -32,3 +42,21 @@ export default function App() {
     </div>
   );
 }
+
+App.propTypes = {
+  firebase: PropTypes.shape({
+    login: PropTypes.func.isRequired,
+  }),
+  auth: PropTypes.object,
+  profile: PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  auth: makeSelectFirebaseAuth(),
+  profile: makeSelectFirebaseProfile(),
+});
+
+export default compose(
+  connect(mapStateToProps),
+  firebaseConnect(),
+)(App);
