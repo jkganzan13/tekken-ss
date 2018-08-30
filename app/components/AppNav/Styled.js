@@ -8,10 +8,15 @@ export const Logo = styled.img`
 
 export const StyledNav = styled(Nav)`
   .dropdown a {
-    padding: ${props => props.loggedIn ? '7.5px' : '15px'}
+    padding: 10px;
   }
   img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
+`;
+
+export const AuthButton = styled.li`
+  padding: 10px 5px;
+  cursor: pointer;
 `;

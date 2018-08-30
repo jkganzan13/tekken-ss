@@ -27,7 +27,7 @@ function AppNav(props) {
           <NavLink key={route.name} {...props} {...route} />
         ))}
       </Nav>
-      <Styled.StyledNav loggedIn={loggedIn} pullRight>
+      <Styled.StyledNav pullRight>
         {loggedIn ? (
           <AccountMenu
             onLogout={props.firebase.logout}
