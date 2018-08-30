@@ -17,6 +17,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router';
 
 import HomePage from 'containers/HomePage/Loadable';
 import Sidestep from 'containers/Sidestep';
@@ -32,6 +33,7 @@ function App(props) {
         firebase={props.firebase}
         auth={props.auth}
         profile={props.profile}
+        location={props.location}
       />
       <Switch>
         <Route exact path="/" component={HomePage} />
@@ -49,6 +51,7 @@ App.propTypes = {
   }),
   auth: PropTypes.object,
   profile: PropTypes.object,
+  location: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -57,6 +60,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default compose(
+  withRouter,
   connect(mapStateToProps),
   firebaseConnect(),
 )(App);

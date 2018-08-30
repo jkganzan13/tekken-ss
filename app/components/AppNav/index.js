@@ -6,7 +6,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import { Navbar, Nav } from 'react-bootstrap';
 import img from 'images/logo.png';
 import ROUTES from 'constants/routes';
@@ -24,7 +23,7 @@ function AppNav(props) {
       <Styled.Logo src={img} />
       <Nav>
         {ROUTES.map(route => (
-          <NavLink key={route.name} {...props} {...route} />
+          <NavLink key={route.name} location={props.location} {...route} />
         ))}
       </Nav>
       <Styled.StyledNav pullRight>
@@ -48,6 +47,7 @@ AppNav.propTypes = {
   }),
   auth: PropTypes.object,
   profile: PropTypes.object,
+  location: PropTypes.object,
 };
 
-export default withRouter(AppNav);
+export default AppNav;
