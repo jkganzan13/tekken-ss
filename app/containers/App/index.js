@@ -24,14 +24,14 @@ import Sidestep from 'containers/Sidestep';
 import Combos from 'containers/Combos';
 import AppNav from 'components/AppNav';
 import { firebaseConnect } from 'react-redux-firebase';
-import { makeSelectFirebaseAuth, makeSelectFirebaseProfile } from './selectors';
+import { makeIsLoggedIn, makeSelectFirebaseProfile } from 'common/selectors';
 
 function App(props) {
   return (
     <div>
       <AppNav
         firebase={props.firebase}
-        auth={props.auth}
+        isLoggedIn={props.isLoggedIn}
         profile={props.profile}
         location={props.location}
       />
@@ -49,13 +49,13 @@ App.propTypes = {
   firebase: PropTypes.shape({
     login: PropTypes.func.isRequired,
   }),
-  auth: PropTypes.object,
+  isLoggedIn: PropTypes.bool,
   profile: PropTypes.object,
   location: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  auth: makeSelectFirebaseAuth(),
+  isLoggedIn: makeIsLoggedIn(),
   profile: makeSelectFirebaseProfile(),
 });
 

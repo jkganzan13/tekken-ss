@@ -138,6 +138,7 @@ module.exports = options => ({
     alias: {
       images: path.resolve('app/images/'),
       constants: path.resolve('app/constants/'),
+      common: path.resolve('app/common/'),
     },
   },
   devtool: options.devtool,

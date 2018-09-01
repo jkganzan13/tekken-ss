@@ -9,15 +9,12 @@ import PropTypes from 'prop-types';
 import { Navbar, Nav } from 'react-bootstrap';
 import img from 'images/logo.png';
 import ROUTES from 'constants/routes';
-import { isLoggedIn } from 'utils/auth';
 import NavLink from './NavLink';
 import * as Styled from './Styled';
 import AccountMenu from './AccountMenu';
 import AuthButtons from './AuthButtons';
 
 function AppNav(props) {
-  const loggedIn = isLoggedIn(props.auth);
-
   return (
     <Navbar>
       <Styled.Logo src={img} />
@@ -27,7 +24,7 @@ function AppNav(props) {
         ))}
       </Nav>
       <Styled.StyledNav pullRight>
-        {loggedIn ? (
+        {props.isLoggedIn ? (
           <AccountMenu
             onLogout={props.firebase.logout}
             profile={props.profile}
@@ -45,7 +42,7 @@ AppNav.propTypes = {
     login: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
   }),
-  auth: PropTypes.object,
+  isLoggedIn: PropTypes.bool,
   profile: PropTypes.object,
   location: PropTypes.object,
 };

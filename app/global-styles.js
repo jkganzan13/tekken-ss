@@ -42,7 +42,8 @@ injectGlobal`
   }
 
   .react-rater-star.is-active,
-  .react-rater-star.is-active-half:before {
+  .react-rater-star.is-active-half:before,
+  .react-rater-star.will-be-active {
     color: #fc6;
   }
 `;

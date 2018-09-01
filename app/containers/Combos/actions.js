@@ -4,13 +4,12 @@
  *
  */
 import { addFirestore } from 'utils/firestore';
-import { ADD_COMBO, FIRESTORE_PATH } from './constants';
+import { ADD_COMBO, FIRESTORE_PATH, RATE_COMBO } from './constants';
 
 export const addCombo = newCombo => {
   addFirestore(FIRESTORE_PATH, {
     ...newCombo,
-    rating: 0,
-    timestamp: new Date().getTime(),
+    timestamp: new Date(),
   });
 
   return {
@@ -18,3 +17,10 @@ export const addCombo = newCombo => {
     payload: newCombo,
   };
 };
+
+export const rateCombo = payload => {
+  return {
+    type: RATE_COMBO,
+    payload,
+  }
+}

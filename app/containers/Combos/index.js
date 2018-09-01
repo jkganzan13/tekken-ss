@@ -16,59 +16,88 @@ import Rater from 'react-rater';
 import injectReducer from 'utils/injectReducer';
 import Combo from 'components/Combo';
 import ComboForm from 'components/ComboForm';
+import { makeIsLoggedIn, makeSelectFirebaseAuth } from 'common/selectors';
 
 import { FIRESTORE_PATH } from './constants';
 import makeSelectCombos from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
+import { calculateRating, calculateDate } from './util';
 
-const COLUMNS = [
-  {
-    dataField: 'name',
-    text: 'Name',
-    headerClasses: 'col-md-1',
-  },
-  {
-    dataField: 'combo',
-    text: 'Combo',
-    formatter: (cell, row) => <Combo {...row} />,
-    headerClasses: 'col-md-8',
-  },
-  {
-    dataField: 'damage',
-    text: 'Damage',
-    align: 'center',
-    headerClasses: 'col-md-1',
-  },
-  {
-    dataField: 'rating',
-    text: 'Rating',
-    formatter: (cell, row) => (
-      <Rater total={5} rating={row.rating} interactive={false} />
-    ),
-    headerClasses: 'col-md-2',
-  },
-];
+function Combos(props) {
+  const COLUMNS = [
+    {
+      dataField: 'name',
+      text: 'Name',
+      headerClasses: 'col-md-1',
+    },
+    {
+      dataField: 'combo',
+      text: 'Combo',
+      formatter: (cell, row) => <Combo {...row} />,
+      headerClasses: 'col-md-7',
+    },
+    {
+      dataField: 'damage',
+      text: 'Damage',
+      align: 'center',
+      headerClasses: 'col-md-1',
+    },
+    {
+      dataField: 'timestamp',
+      text: 'Date',
+      align: 'left',
+      headerClasses: 'col-md-1',
+      formatter: (cell, row) => calculateDate(row.timestamp.seconds),
+    },
+    {
+      dataField: 'rating',
+      text: 'Rating',
+      formatter: (cell, row) => (
+        <Rater
+          total={5}
+          rating={calculateRating(row.ratings)}
+          interactive={props.isLoggedIn}
+          onRate={({ rating }) => props.actions.rateCombo(rating)}
+        />
+      ),
+      headerClasses: 'col-md-2',
+    },
+  ];
 
-const Combos = props => (
-  <div className="container">
-    <BootstrapTable
-      keyField="id"
-      data={props.combos}
-      columns={COLUMNS}
-      noDataIndication="Loading"
-    />
-    <ComboForm onSubmit={props.actions.addCombo} />
-  </div>
-);
+  return (
+    <div className="container">
+      <BootstrapTable
+        keyField="id"
+        data={props.combos}
+        columns={COLUMNS}
+        noDataIndication="Loading"
+      />
+      {props.isLoggedIn && (
+        <ComboForm
+          onSubmit={combo =>
+            props.actions.addCombo({
+              ...combo,
+              submittedBy: props.auth.uid,
+            })
+          }
+        />
+      )}
+    </div>
+  );
+}
 
 Combos.propTypes = {
   combos: PropTypes.array.isRequired,
+  isLoggedIn: PropTypes.bool,
+  auth: PropTypes.object,
   actions: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   combos: makeSelectCombos(),
+  isLoggedIn: makeIsLoggedIn(),
+  auth: makeSelectFirebaseAuth(),
 });
 
 function mapDispatchToProps(dispatch) {
