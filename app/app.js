@@ -16,7 +16,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import 'react-rater/lib/react-rater.css';
 import 'antd/dist/antd.css';
 
 // Import root app

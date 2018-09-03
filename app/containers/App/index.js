@@ -19,29 +19,34 @@ import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 
+import { Layout } from 'antd';
+
 import HomePage from 'containers/HomePage/Loadable';
 import Sidestep from 'containers/Sidestep';
 import Combos from 'containers/Combos';
 import AppNav from 'components/AppNav';
 import { firebaseConnect } from 'react-redux-firebase';
 import { makeIsLoggedIn, makeSelectFirebaseProfile } from 'common/selectors';
+import * as Styled from './Styled';
 
 function App(props) {
   return (
-    <div>
+    <Layout>
       <AppNav
         firebase={props.firebase}
         isLoggedIn={props.isLoggedIn}
         profile={props.profile}
         location={props.location}
       />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/ss" component={Sidestep} />
-        <Route exact path="/combos" component={Combos} />
-        <Route component={HomePage} />
-      </Switch>
-    </div>
+      <Styled.Content>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/ss" component={Sidestep} />
+          <Route exact path="/combos" component={Combos} />
+          <Route component={HomePage} />
+        </Switch>
+      </Styled.Content>
+    </Layout>
   );
 }
 
