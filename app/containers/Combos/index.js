@@ -23,7 +23,7 @@ import MyList from './MyList';
 
 function Combos(props) {
   return (
-    <div className="container">
+    <div>
       <MyList dataSource={props.combos} />
       {props.isLoggedIn && (
         <ComboForm

@@ -1,39 +1,34 @@
 /**
  *
- * Banner
+ * AppNav
  *
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Menu } from 'antd';
 import img from 'images/logo.png';
 import ROUTES from 'constants/routes';
-import NavLink from './NavLink';
 import * as Styled from './Styled';
-import AccountMenu from './AccountMenu';
-import AuthButtons from './AuthButtons';
+import NavMenu from './NavMenu';
 
 function AppNav(props) {
   return (
-    <Navbar>
+    <Styled.StyledHeader>
       <Styled.Logo src={img} />
-      <Nav>
+      <Styled.StyledMenu
+        mode="horizontal"
+        defaultSelectedKeys={[props.location.pathname]}
+      >
         {ROUTES.map(route => (
-          <NavLink key={route.name} location={props.location} {...route} />
+          <Menu.Item key={route.to}>
+            <Link to={route.to}>{route.name}</Link>
+          </Menu.Item>
         ))}
-      </Nav>
-      <Styled.StyledNav pullRight>
-        {props.isLoggedIn ? (
-          <AccountMenu
-            onLogout={props.firebase.logout}
-            profile={props.profile}
-          />
-        ) : (
-          <AuthButtons onLogin={props.firebase.login} />
-        )}
-      </Styled.StyledNav>
-    </Navbar>
+        <NavMenu {...props} />
+      </Styled.StyledMenu>
+    </Styled.StyledHeader>
   );
 }
 
