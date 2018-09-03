@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import R from 'ramda';
 import { fromJS } from 'immutable';
-import { mapObject } from 'utils/firestore';
+import { selectUsersFirebase } from 'common/selectors';
+import { mergeCombosAndUsers } from './util';
 import { initialState } from './reducer';
 
 /**
@@ -9,7 +10,7 @@ import { initialState } from './reducer';
  */
 
 const selectCombosDomain = state =>
-  fromJS(R.pathOr(initialState, ['data', 'combos'], state.get('firestore')));
+  fromJS(R.pathOr(initialState, ['ordered', 'combos'], state.get('firestore')));
 
 /**
  * Other specific selectors
@@ -20,7 +21,9 @@ const selectCombosDomain = state =>
  */
 
 const makeSelectCombos = () =>
-  createSelector(selectCombosDomain, substate => mapObject(substate.toJS()));
+  createSelector(selectCombosDomain, selectUsersFirebase, (combos, users) =>
+    mergeCombosAndUsers(combos.toJS(), users),
+  );
 
 export default makeSelectCombos;
 export { selectCombosDomain };

@@ -13,3 +13,15 @@ export const calculateRating = R.pipe(
 
 export const calculateDate = seconds =>
   new Date(seconds * 1000).toLocaleDateString('en-US');
+
+const getUserNameById = (users = {}, id) =>
+  R.pathOr('Anonymous', [id, 'metadata', 'name'], users);
+
+export const mergeCombosAndUsers = (combos = {}, users = {}) =>
+  R.keys(combos).map(k => {
+    const combo = combos[k];
+    return R.merge(combo, {
+      id: k,
+      submittedBy: getUserNameById(users, combo.submittedBy),
+    });
+  });

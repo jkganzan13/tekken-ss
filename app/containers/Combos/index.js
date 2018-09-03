@@ -13,7 +13,11 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 import injectReducer from 'utils/injectReducer';
 import ComboForm from 'components/ComboForm';
-import { makeIsLoggedIn, makeSelectFirebaseAuth } from 'common/selectors';
+import {
+  makeIsLoading,
+  makeIsLoggedIn,
+  makeSelectFirebaseAuth,
+} from 'common/selectors';
 
 import { FIRESTORE_PATH } from './constants';
 import makeSelectCombos from './selectors';
@@ -24,7 +28,7 @@ import MyList from './MyList';
 function Combos(props) {
   return (
     <div className="container">
-      <MyList dataSource={props.combos} />
+      <MyList dataSource={props.combos} isLoading={props.isLoading} />
       {props.isLoggedIn && (
         <ComboForm
           onSubmit={combo =>
@@ -42,6 +46,7 @@ function Combos(props) {
 Combos.propTypes = {
   combos: PropTypes.array.isRequired,
   isLoggedIn: PropTypes.bool,
+  isLoading: PropTypes.bool,
   auth: PropTypes.object,
   actions: PropTypes.object,
 };
@@ -49,6 +54,7 @@ Combos.propTypes = {
 const mapStateToProps = createStructuredSelector({
   combos: makeSelectCombos(),
   isLoggedIn: makeIsLoggedIn(),
+  isLoading: makeIsLoading(),
   auth: makeSelectFirebaseAuth(),
 });
 
@@ -68,5 +74,5 @@ const withReducer = injectReducer({ key: 'combos', reducer });
 export default compose(
   withReducer,
   withConnect,
-  firestoreConnect([FIRESTORE_PATH]),
+  firestoreConnect(FIRESTORE_PATH),
 )(Combos);
