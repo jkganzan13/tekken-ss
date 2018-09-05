@@ -1,24 +1,39 @@
 import styled from 'styled-components';
+import { CommonContainer } from 'common/Styled';
+import { Layout, List } from 'antd';
 
-export const Container = styled.div`
-  background: transparent;
-`;
-
-export const Row = styled.div`
+export const Container = styled(CommonContainer)`
   display: flex;
 `;
 
-export const ImgContainer = styled.div`
-  position: relative;
+export const NewsContainer = styled(Layout.Content)`
+  flex: 2;
+  background: white;
+  margin-right: 50px;
 `;
 
-export const ImgText = styled.div`
-  position: absolute;
-  left: 10px;
-  bottom: 0;
+export const SidestepContainer = styled(Layout.Content)`
+  flex: 1;
+  background: white;
+  overflow: auto;
 `;
 
-export const Img = styled.img`
-  width: 180px;
-  height: 100px;
+export const SidestepListItem = styled(List.Item)`
+  .ant-list-item-extra-wrap {
+    .ant-list-item-main {
+      order: 2;
+      margin-left: 58px;
+    }
+    .ant-list-item-extra {
+      order: 1;
+      margin-left: 0;
+    }
+  }
+`;
+
+export const ListHeader = styled.div`
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 16px;
+  font-weight: 500;
 `;

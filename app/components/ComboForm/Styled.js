@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Form } from 'react-bootstrap';
 
 export const Container = styled.div`
   border: 1px solid lightgrey;
@@ -23,8 +22,20 @@ export const TextContainer = styled.div`
   margin-top: 10px;
 `;
 
-export const StyledForm = styled(Form)`
+export const StyledForm = styled.form`
+  display: flex;
+
   > * {
     margin-right: 10px;
+  }
+
+  .ant-select {
+    width: 20%;
+    min-width: 200px;
+  }
+
+  .ant-input {
+    width: 10%;
+    min-width: 100px;
   }
 `;

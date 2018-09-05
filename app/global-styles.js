@@ -17,9 +17,12 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
     min-height: 100%;
     min-width: 100%;
+
+    > .ant-layout {
+      height: 100vh;
+    }
   }
 
   p,
@@ -35,15 +38,5 @@ injectGlobal`
   .isvg.loaded.separator svg {
     width: 10px;
     margin-left: 10px;
-  }
-
-  .react-rater-star {
-    font-size: 20px;
-  }
-
-  .react-rater-star.is-active,
-  .react-rater-star.is-active-half:before,
-  .react-rater-star.will-be-active {
-    color: #fc6;
   }
 `;
