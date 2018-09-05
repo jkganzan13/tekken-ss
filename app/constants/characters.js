@@ -30,7 +30,7 @@ const CHARACTERS = [
     ss: DIRECTION.RIGHT,
   },
   {
-    key: 'deviljin',
+    key: 'devil-jin',
     name: 'Devil Jin',
     img: require('images/thumbnails/deviljin_thumbnail.png'),
     ss: DIRECTION.LEFT,
@@ -78,7 +78,7 @@ const CHARACTERS = [
     ss: DIRECTION.RIGHT,
   },
   {
-    key: 'jack7',
+    key: 'jack-7',
     name: 'Jack 7',
     img: require('images/thumbnails/jack7_thumbnail.png'),
     ss: DIRECTION.LEFT,
@@ -156,13 +156,13 @@ const CHARACTERS = [
     ss: DIRECTION.LEFT,
   },
   {
-    key: 'luckychloe',
+    key: 'lucky-chloe',
     name: 'Lucky Chloe',
     img: require('images/thumbnails/luckychloe_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
   {
-    key: 'raven',
+    key: 'master-raven',
     name: 'Master Raven',
     img: require('images/thumbnails/raven_thumbnail.png'),
     ss: DIRECTION.LEFT,
@@ -215,6 +215,12 @@ const CHARACTERS = [
     img: require('images/thumbnails/yoshimitsu_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
+  // {
+  //   key: 'noctis',
+  //   name: 'Noctis',
+  //   img: require('images/thumbnails/yoshimitsu_thumbnail.png'),
+  //   ss: DIRECTION.LEFT,
+  // },
 ];
 
 export const CHARACTER_NAMES = CHARACTERS.map(c => c.name);

@@ -23,6 +23,7 @@ import { Layout } from 'antd';
 
 import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
+import MoveList from 'containers/MoveList';
 import AppNav from 'components/AppNav';
 import { firebaseConnect } from 'react-redux-firebase';
 import { makeIsLoggedIn, makeSelectFirebaseProfile } from 'common/selectors';
@@ -39,6 +40,7 @@ function App(props) {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/combos" component={Combos} />
+        <Route exact path="/moves" component={MoveList} />
         <Route component={HomePage} />
       </Switch>
     </Layout>
