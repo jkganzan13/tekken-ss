@@ -1,4 +1,5 @@
 import R from 'ramda';
+import CHARACTERS from 'constants/characters';
 
 const calculateAverage = (ratings = []) =>
   ratings.reduce((acc, rating) => acc + rating.value, 0) / ratings.length;
@@ -25,3 +26,6 @@ export const mergeCombosAndUsers = (combos = {}, users = {}) =>
       submittedBy: getUserNameById(users, combo.submittedBy),
     });
   });
+
+export const getImgByCharacterName = name =>
+  CHARACTERS.find(c => c.name === name).img;

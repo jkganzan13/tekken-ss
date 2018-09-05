@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import { List, Avatar } from 'antd';
 
 import injectReducer from 'utils/injectReducer';
 import ComboForm from 'components/ComboForm';
@@ -18,17 +19,47 @@ import {
   makeIsLoggedIn,
   makeSelectFirebaseAuth,
 } from 'common/selectors';
+import IconText from 'components/IconText';
+import DataList from 'components/DataList';
+import { CommonContainer } from 'common/Styled';
 
 import { FIRESTORE_PATH } from './constants';
 import makeSelectCombos from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
-import MyList from './MyList';
+import { getImgByCharacterName } from './util';
+import * as Styled from './Styled';
 
 function Combos(props) {
+  const renderCombo = item => (
+    <List.Item
+      key={item.name}
+      actions={[
+        <IconText
+          type="star-o"
+          text={item.ratings ? item.ratings.length : 0}
+        />,
+      ]}
+    >
+      <List.Item.Meta
+        avatar={<Avatar src={getImgByCharacterName(item.name)} />}
+        title={<span>{item.name}</span>}
+        description={item.submittedBy}
+      />
+      {item.combo}
+    </List.Item>
+  );
+
   return (
-    <div>
-      <MyList dataSource={props.combos} isLoading={props.isLoading} />
+    <CommonContainer>
+      <Styled.Container>Filters here</Styled.Container>
+      <Styled.Container>
+        <DataList
+          dataSource={props.combos}
+          isLoading={props.isLoading}
+          renderItem={renderCombo}
+        />
+      </Styled.Container>
       {props.isLoggedIn && (
         <ComboForm
           onSubmit={combo =>
@@ -39,7 +70,7 @@ function Combos(props) {
           }
         />
       )}
-    </div>
+    </CommonContainer>
   );
 }
 
