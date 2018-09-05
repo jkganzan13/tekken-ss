@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, FormControl } from 'react-bootstrap';
+import { Button, Select, Input } from 'antd';
 import Combo from 'components/Combo';
 import { CHARACTER_NAMES } from 'constants/characters';
 import * as Styled from './Styled';
@@ -15,22 +15,22 @@ import * as Styled from './Styled';
 export class ComboForm extends React.Component {
   state = {
     name: CHARACTER_NAMES[0],
-    combo: '',
-    damage: 0,
+    combo: 'd/f+2, b+2,1, d/b+2,2',
+    damage: '',
   };
 
   onChange = key => e => this.setState({ [key]: e.target.value });
 
   onSubmit = () => {
     this.props.onSubmit(this.state);
-    this.setState({ combo: '', damage: 0 });
+    this.setState({ combo: '', damage: '' });
   };
 
   renderOptions = () =>
     CHARACTER_NAMES.map(name => (
-      <option key={name} value={name}>
+      <Select.Option key={name} value={name}>
         {name}
-      </option>
+      </Select.Option>
     ));
 
   render() {
@@ -40,30 +40,34 @@ export class ComboForm extends React.Component {
         <Styled.ComboContainer>
           <Combo combo={this.state.combo} />
         </Styled.ComboContainer>
-        <Styled.StyledForm inline>
-          <FormControl
-            componentClass="select"
-            placeholder="select"
-            onChange={this.onChange('name')}
-            value={this.state.character}
+        <Styled.StyledForm>
+          <Select
+            showSearch
+            placeholder="Select a character"
+            optionFilterProp="children"
+            onChange={value => this.onChange('name')({ target: { value } })}
+            filterOption={(input, option) =>
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
           >
             {this.renderOptions()}
-          </FormControl>
-          <FormControl
-            type="text"
+          </Select>
+          <Input
             value={this.state.damage}
             placeholder="Damage"
             onChange={this.onChange('damage')}
           />
-          <Button bsStyle="primary" onClick={this.onSubmit}>
+          <Button type="primary" onClick={this.onSubmit}>
             Submit
           </Button>
         </Styled.StyledForm>
         <Styled.TextContainer>
-          <FormControl
-            componentClass="textarea"
-            placeholder="textarea"
+          <Input.TextArea
+            placeholder="Enter combo E.g. d/f+2, b+2,1, d/b+2,2"
             value={this.state.combo}
+            rows={4}
             onChange={this.onChange('combo')}
           />
         </Styled.TextContainer>
