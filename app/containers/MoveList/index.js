@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
+import { Table } from 'antd';
+import uuidv4 from 'uuid/v4';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -19,6 +21,7 @@ import makeSelectMoveList from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import * as actions from './actions';
+import { moveListColumns } from './data';
 
 /* eslint-disable react/prefer-stateless-function */
 export class MoveList extends React.PureComponent {
@@ -34,7 +37,12 @@ export class MoveList extends React.PureComponent {
           selected={this.props.moveList.selected}
         />
         <Styled.Container>
-          {JSON.stringify(this.props.moveList.selectedMoves)}
+          <Table
+            rowKey={uuidv4}
+            dataSource={this.props.moveList.selectedMoves}
+            columns={moveListColumns}
+            pagination={false}
+          />
         </Styled.Container>
       </CommonContainer>
     );

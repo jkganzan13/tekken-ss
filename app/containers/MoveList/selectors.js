@@ -17,10 +17,10 @@ const selectMoveListDomain = state => state.get('moveList', initialState);
 
 const makeSelectMoveList = () =>
   createSelector(selectMoveListDomain, substate => {
-    const state = substate.toJS();
+    const { selected, moves } = substate.toJS();
     return {
-      selected: state.selected,
-      selectedMoves: state.moves[state.selected].data,
+      selected,
+      selectedMoves: moves[selected] ? moves[selected].data : [],
     };
   });
 

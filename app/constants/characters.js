@@ -204,7 +204,7 @@ const CHARACTERS = [
     ss: DIRECTION.LEFT,
   },
   {
-    key: 'xiaoyu',
+    key: 'ling',
     name: 'Xiaoyu',
     img: require('images/thumbnails/xiaoyu_thumbnail.png'),
     ss: DIRECTION.LEFT,
