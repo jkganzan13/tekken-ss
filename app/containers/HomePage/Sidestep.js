@@ -2,6 +2,7 @@ import React from 'react';
 import { List } from 'antd';
 import DataList from 'components/DataList';
 import CHARACTERS from 'constants/characters';
+import { ListHeader } from 'common/Styled';
 import * as Styled from './Styled';
 
 function Sidestep() {
@@ -18,7 +19,7 @@ function Sidestep() {
   return (
     <Styled.SidestepContainer>
       <DataList
-        header={<Styled.ListHeader>Sidestep Guide</Styled.ListHeader>}
+        header={<ListHeader>Sidestep Guide</ListHeader>}
         dataSource={CHARACTERS}
         isLoading={false}
         renderItem={renderItem}

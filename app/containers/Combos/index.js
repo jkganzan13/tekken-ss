@@ -12,6 +12,7 @@ import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { List, Avatar } from 'antd';
 
+import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import ComboForm from 'components/ComboForm';
 import {
@@ -22,13 +23,28 @@ import {
 import IconText from 'components/IconText';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
+import CharacterDropdown from 'components/CharacterDropdown';
 
-import { FIRESTORE_PATH } from './constants';
-import makeSelectCombos from './selectors';
+import makeSelectCombos, { makeCombosFilters } from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
-import { getImgByCharacterName } from './util';
+import saga from './saga';
+import { getImgByCharacterName, queryFirestore } from './util';
 import * as Styled from './Styled';
+
+const Filters = props => (
+  <Styled.StyledHeader>
+    <span>Filters:</span>
+    {/* TODO: Multiselect filter AND persist value */}
+    <CharacterDropdown
+      onChange={e => props.onChange({ key: 'name', value: e.target.value })}
+    />
+  </Styled.StyledHeader>
+);
+
+Filters.propTypes = {
+  onChange: PropTypes.func,
+};
 
 function Combos(props) {
   const renderCombo = item => (
@@ -52,9 +68,9 @@ function Combos(props) {
 
   return (
     <CommonContainer>
-      <Styled.Container>Filters here</Styled.Container>
       <Styled.Container>
         <DataList
+          header={<Filters onChange={props.actions.updateFilter} />}
           dataSource={props.combos}
           isLoading={props.isLoading}
           renderItem={renderCombo}
@@ -87,6 +103,7 @@ const mapStateToProps = createStructuredSelector({
   isLoggedIn: makeIsLoggedIn(),
   isLoading: makeIsLoading(),
   auth: makeSelectFirebaseAuth(),
+  filters: makeCombosFilters(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -101,9 +118,11 @@ const withConnect = connect(
 );
 
 const withReducer = injectReducer({ key: 'combos', reducer });
+const withSaga = injectSaga({ key: 'combos', saga });
 
 export default compose(
   withReducer,
+  withSaga,
   withConnect,
-  firestoreConnect(FIRESTORE_PATH),
+  firestoreConnect(queryFirestore),
 )(Combos);

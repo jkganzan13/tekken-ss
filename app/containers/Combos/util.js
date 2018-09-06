@@ -29,3 +29,21 @@ export const mergeCombosAndUsers = (combos = {}, users = {}) =>
 
 export const getImgByCharacterName = name =>
   CHARACTERS.find(c => c.name === name).img;
+
+const getWhereOptions = filters =>
+  Object.keys(filters).reduce((acc, f) => {
+    if (filters[f]) acc.push([f, '==', filters[f]]);
+    return acc;
+  }, []);
+
+export const queryFirestore = props => {
+  const opts = getWhereOptions(props.filters);
+  return [
+    { collection: 'users' },
+    {
+      collection: 'combos',
+      where: opts,
+      // orderBy: ['timestamp', 'desc'], TODO: FIX THIS - where and orderBy
+    },
+  ];
+};

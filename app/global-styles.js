@@ -19,10 +19,6 @@ injectGlobal`
   #app {
     min-height: 100%;
     min-width: 100%;
-
-    > .ant-layout {
-      height: 100vh;
-    }
   }
 
   p,

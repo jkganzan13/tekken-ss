@@ -6,9 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Select, Input } from 'antd';
+import { Button, Input } from 'antd';
 import Combo from 'components/Combo';
 import { CHARACTER_NAMES } from 'constants/characters';
+import CharacterDropdown from 'components/CharacterDropdown';
 import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -26,13 +27,6 @@ export class ComboForm extends React.Component {
     this.setState({ combo: '', damage: '' });
   };
 
-  renderOptions = () =>
-    CHARACTER_NAMES.map(name => (
-      <Select.Option key={name} value={name}>
-        {name}
-      </Select.Option>
-    ));
-
   render() {
     return (
       <Styled.Container>
@@ -41,19 +35,7 @@ export class ComboForm extends React.Component {
           <Combo combo={this.state.combo} />
         </Styled.ComboContainer>
         <Styled.StyledForm>
-          <Select
-            showSearch
-            placeholder="Select a character"
-            optionFilterProp="children"
-            onChange={value => this.onChange('name')({ target: { value } })}
-            filterOption={(input, option) =>
-              option.props.children
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {this.renderOptions()}
-          </Select>
+          <CharacterDropdown onChange={this.onChange('name')} />
           <Input
             value={this.state.damage}
             placeholder="Damage"
