@@ -29,14 +29,16 @@ import makeSelectCombos, { makeCombosFilters } from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
-import { getImgByCharacterName, queryFirestore } from './util';
+import { getImgByCharacterName, queryFirestore, calculateDate } from './util';
 import * as Styled from './Styled';
 
 const Filters = props => (
   <Styled.StyledHeader>
     <span>Filters:</span>
-    {/* TODO: Multiselect filter AND persist value */}
+    {/* TODO: Multiselect filter */}
     <CharacterDropdown
+      // mode="multiple"
+      value={props.filters.name}
       onChange={e => props.onChange({ key: 'name', value: e.target.value })}
     />
   </Styled.StyledHeader>
@@ -44,6 +46,7 @@ const Filters = props => (
 
 Filters.propTypes = {
   onChange: PropTypes.func,
+  filters: PropTypes.object,
 };
 
 function Combos(props) {
@@ -60,7 +63,8 @@ function Combos(props) {
       <List.Item.Meta
         avatar={<Avatar src={getImgByCharacterName(item.name)} />}
         title={<span>{item.name}</span>}
-        description={item.submittedBy}
+        // Replace this with display name once implememted (Issue #4)
+        description={calculateDate(item.timestamp.seconds)}
       />
       {item.combo}
     </List.Item>
@@ -70,7 +74,12 @@ function Combos(props) {
     <CommonContainer>
       <Styled.Container>
         <DataList
-          header={<Filters onChange={props.actions.updateFilter} />}
+          header={
+            <Filters
+              onChange={props.actions.updateFilter}
+              filters={props.filters}
+            />
+          }
           dataSource={props.combos}
           isLoading={props.isLoading}
           renderItem={renderCombo}
@@ -96,6 +105,7 @@ Combos.propTypes = {
   isLoading: PropTypes.bool,
   auth: PropTypes.object,
   actions: PropTypes.object,
+  filters: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

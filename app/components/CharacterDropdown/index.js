@@ -16,6 +16,8 @@ function CharacterDropdown(props) {
       showSearch
       placeholder="Select a character"
       optionFilterProp="children"
+      mode={props.mode}
+      value={props.value || undefined}
       onChange={value => props.onChange({ target: { value } })}
       filterOption={(input, option) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -32,6 +34,8 @@ function CharacterDropdown(props) {
 
 CharacterDropdown.propTypes = {
   onChange: PropTypes.func,
+  mode: PropTypes.string,
+  value: PropTypes.node,
 };
 
 export default CharacterDropdown;

@@ -13,7 +13,11 @@ export const calculateRating = R.pipe(
 );
 
 export const calculateDate = seconds =>
-  new Date(seconds * 1000).toLocaleDateString('en-US');
+  new Date(seconds * 1000).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
 const getUserNameById = (users = {}, id) =>
   R.pathOr('Anonymous', [id, 'metadata', 'name'], users);
@@ -32,7 +36,14 @@ export const getImgByCharacterName = name =>
 
 const getWhereOptions = filters =>
   Object.keys(filters).reduce((acc, f) => {
-    if (filters[f]) acc.push([f, '==', filters[f]]);
+    const value = filters[f];
+    // TODO: Firebase doesnt support OR operator
+    // if (Array.isArray(value)) {
+    //   value.forEach(v => acc.push([f, '==', v]));
+    // } else
+    if (value) {
+      acc.push([f, '==', value]);
+    }
     return acc;
   }, []);
 
@@ -43,7 +54,7 @@ export const queryFirestore = props => {
     {
       collection: 'combos',
       where: opts,
-      // orderBy: ['timestamp', 'desc'], TODO: FIX THIS - where and orderBy
+      orderBy: ['timestamp', 'desc'],
     },
   ];
 };
