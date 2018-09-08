@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
-import { Table } from 'antd';
+import { Table, BackTop } from 'antd';
 import uuidv4 from 'uuid/v4';
 
 import injectSaga from 'utils/injectSaga';
@@ -29,15 +29,30 @@ export class MoveList extends React.PureComponent {
     // fetch data
     this.props.loadMoveList();
   }
+
+  componentDidUpdate() {
+    if (this.props.moveList.selected && this.tableRef) {
+      window.scrollTo({
+        top: this.tableRef.offsetTop - 10,
+        behavior: 'smooth',
+      });
+    }
+  }
+
   render() {
     return (
       <CommonContainer>
+        <BackTop />
         <CharacterSelect
           onSelect={this.props.actions.selectCharacter}
           selected={this.props.moveList.selected}
         />
         {this.props.moveList.selectedMoves.length ? (
-          <Styled.Container>
+          <Styled.Container
+            innerRef={el => {
+              this.tableRef = el;
+            }}
+          >
             <Table
               rowKey={uuidv4}
               dataSource={this.props.moveList.selectedMoves}

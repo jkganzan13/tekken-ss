@@ -180,12 +180,6 @@ const CHARACTERS = [
     ss: DIRECTION.RIGHT,
   },
   {
-    key: 'panda',
-    name: 'Panda',
-    img: require('images/thumbnails/panda_thumbnail.png'),
-    ss: DIRECTION.RIGHT,
-  },
-  {
     key: 'paul',
     name: 'Paul',
     img: require('images/thumbnails/paul_thumbnail.png'),

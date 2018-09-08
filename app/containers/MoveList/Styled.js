@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { Layout } from 'antd';
 
-export const Container = styled(Layout.Content)`
+export const Container = styled.div`
   background: white;
 `;
