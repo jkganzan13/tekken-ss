@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import R from 'ramda';
 import { fromJS } from 'immutable';
 import { selectUsersFirebase } from 'common/selectors';
-import { mergeCombosAndUsers } from './util';
+import { mergeCombosAndUsers, filterCombos } from './util';
 import { initialState } from './reducer';
 
 /**
@@ -27,11 +27,7 @@ const selectCombosFromFirestore = state =>
 const selectFilters = state =>
   state.getIn(['combos', 'filters'], initialState.get('filters'));
 
-/**
- * Default selector used by Combos
- */
-
-const makeSelectCombos = () =>
+const selectCombos = () =>
   createSelector(
     selectCombosFromFirestore,
     selectUsersFirebase,
@@ -40,6 +36,13 @@ const makeSelectCombos = () =>
 
 const makeCombosFilters = () =>
   createSelector(selectFilters, substate => substate.toJS());
+
+/**
+ * Default selector used by Combos
+ */
+
+const makeSelectCombos = () =>
+  createSelector(selectCombos(), makeCombosFilters(), filterCombos);
 
 export default makeSelectCombos;
 export { selectCombosDomain, makeCombosFilters };

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { List, Avatar } from 'antd';
+import { List, Avatar, Input } from 'antd';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -35,11 +35,17 @@ import * as Styled from './Styled';
 const Filters = props => (
   <Styled.StyledHeader>
     <span>Filters:</span>
-    {/* TODO: Multiselect filter */}
     <CharacterDropdown
-      // mode="multiple"
-      value={props.filters.name}
-      onChange={e => props.onChange({ key: 'name', value: e.target.value })}
+      mode="multiple"
+      value={props.filters.characters}
+      onChange={e =>
+        props.onChange({ key: 'characters', value: e.target.value })
+      }
+    />
+    <Input
+      value={props.filters.combo}
+      placeholder="Combo"
+      onChange={e => props.onChange({ key: 'combo', value: e.target.value })}
     />
   </Styled.StyledHeader>
 );

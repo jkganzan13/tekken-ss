@@ -9,7 +9,7 @@ import { UPDATE_FILTER } from './constants';
 
 export const initialState = fromJS({
   filters: {
-    name: '',
+    characters: [],
     combo: '',
     damage: '',
   },

@@ -34,27 +34,23 @@ export const mergeCombosAndUsers = (combos = {}, users = {}) =>
 export const getImgByCharacterName = name =>
   CHARACTERS.find(c => c.name === name).img;
 
-const getWhereOptions = filters =>
-  Object.keys(filters).reduce((acc, f) => {
-    const value = filters[f];
-    // TODO: Firebase doesnt support OR operator
-    // if (Array.isArray(value)) {
-    //   value.forEach(v => acc.push([f, '==', v]));
-    // } else
-    if (value) {
-      acc.push([f, '==', value]);
-    }
-    return acc;
-  }, []);
+export const queryFirestore = () => [
+  { collection: 'users' },
+  {
+    collection: 'combos',
+    orderBy: ['timestamp', 'desc'],
+  },
+]
 
-export const queryFirestore = props => {
-  const opts = getWhereOptions(props.filters);
-  return [
-    { collection: 'users' },
-    {
-      collection: 'combos',
-      where: opts,
-      orderBy: ['timestamp', 'desc'],
-    },
-  ];
+const getCharacterFilters = filters => {
+  if (!filters.characters.length) return R.T;
+  const characters = filters.characters.map(c => R.propEq('name', c));
+  return R.anyPass(characters);
+};
+
+export const filterCombos = (combos, filters) => {
+  const characterFilters = getCharacterFilters(filters);
+  const comboFilter = c => c.combo.includes(filters.combo.trim());
+  const filter = R.allPass([characterFilters, comboFilter]);
+  return combos.filter(filter);
 };
