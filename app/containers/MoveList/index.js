@@ -36,14 +36,16 @@ export class MoveList extends React.PureComponent {
           onSelect={this.props.actions.selectCharacter}
           selected={this.props.moveList.selected}
         />
-        <Styled.Container>
-          <Table
-            rowKey={uuidv4}
-            dataSource={this.props.moveList.selectedMoves}
-            columns={moveListColumns}
-            pagination={false}
-          />
-        </Styled.Container>
+        {this.props.moveList.selectedMoves.length ? (
+          <Styled.Container>
+            <Table
+              rowKey={uuidv4}
+              dataSource={this.props.moveList.selectedMoves}
+              columns={moveListColumns}
+              pagination={false}
+            />
+          </Styled.Container>
+        ) : null}
       </CommonContainer>
     );
   }

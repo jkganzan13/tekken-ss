@@ -3,24 +3,25 @@
  * Combos actions
  *
  */
-import { addFirestore } from 'utils/firestore';
-import { ADD_COMBO, FIRESTORE_COMBOS_PATH, RATE_COMBO } from './constants';
+import { ADD_COMBO, RATE_COMBO, UPDATE_FILTER } from './constants';
 
-export const addCombo = newCombo => {
-  addFirestore(FIRESTORE_COMBOS_PATH, {
-    ...newCombo,
-    timestamp: new Date(),
-  });
-
+export function addCombo(newCombo) {
   return {
     type: ADD_COMBO,
     payload: newCombo,
   };
-};
+}
 
-export const rateCombo = payload => {
+export function rateCombo(payload) {
   return {
     type: RATE_COMBO,
     payload,
-  }
+  };
+}
+
+export function updateFilter(payload) {
+  return {
+    type: UPDATE_FILTER,
+    payload,
+  };
 }

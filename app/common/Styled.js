@@ -10,3 +10,10 @@ export const Title = styled.div`
   font-size: 14px;
   font-weight: 500;
 `;
+
+export const ListHeader = styled.div`
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 16px;
+  font-weight: 500;
+`;

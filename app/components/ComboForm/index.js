@@ -6,32 +6,40 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Select, Input } from 'antd';
+import { message, Button, Input } from 'antd';
 import Combo from 'components/Combo';
-import { CHARACTER_NAMES } from 'constants/characters';
+import CharacterDropdown from 'components/CharacterDropdown';
 import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
 export class ComboForm extends React.Component {
   state = {
-    name: CHARACTER_NAMES[0],
+    name: undefined,
     combo: 'd/f+2, b+2,1, d/b+2,2',
     damage: '',
   };
 
   onChange = key => e => this.setState({ [key]: e.target.value });
 
-  onSubmit = () => {
-    this.props.onSubmit(this.state);
-    this.setState({ combo: '', damage: '' });
+  validate = () => {
+    const error = Object.keys(this.state).reduce((acc, k) => {
+      /* eslint-disable no-param-reassign */
+      if (!this.state[k]) acc = acc ? `${acc}, ${k}` : k;
+      return acc;
+    }, '');
+    if (error) {
+      message.error(`Invalid input: ${error}`, 3);
+      return false;
+    }
+    return true;
   };
 
-  renderOptions = () =>
-    CHARACTER_NAMES.map(name => (
-      <Select.Option key={name} value={name}>
-        {name}
-      </Select.Option>
-    ));
+  onSubmit = () => {
+    if (this.validate()) {
+      this.props.onSubmit(this.state);
+      this.setState({ combo: '', damage: '' });
+    }
+  };
 
   render() {
     return (
@@ -41,19 +49,10 @@ export class ComboForm extends React.Component {
           <Combo combo={this.state.combo} />
         </Styled.ComboContainer>
         <Styled.StyledForm>
-          <Select
-            showSearch
-            placeholder="Select a character"
-            optionFilterProp="children"
-            onChange={value => this.onChange('name')({ target: { value } })}
-            filterOption={(input, option) =>
-              option.props.children
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {this.renderOptions()}
-          </Select>
+          <CharacterDropdown
+            onChange={this.onChange('name')}
+            value={this.state.name}
+          />
           <Input
             value={this.state.damage}
             placeholder="Damage"
