@@ -128,6 +128,7 @@ module.exports = options => ({
         API_KEY: JSON.stringify(process.env.API_KEY),
         AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
         PROJECT_ID: JSON.stringify(process.env.PROJECT_ID),
+        API_BASE_URL: JSON.stringify(process.env.API_BASE_URL),
       },
     }),
   ]),

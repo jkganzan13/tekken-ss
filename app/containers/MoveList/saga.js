@@ -4,7 +4,7 @@ import { LOAD_MOVE_LIST } from './constants';
 import { loadingSuccess, loadingError } from './actions';
 
 export function* getMoveList() {
-  const url = 'http://api.tekkenchicken.com/api/framedata/';
+  const url = `${process.env.API_BASE_URL}/moves`;
   try {
     const moveList = yield call(request, url);
     yield put(loadingSuccess(moveList));
