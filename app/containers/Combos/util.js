@@ -26,6 +26,7 @@ export const mergeCombosAndUsers = (combos = {}, users = {}) =>
   R.keys(combos).map(k => {
     const combo = combos[k];
     return R.merge(combo, {
+      id: k, // Remove this if using ordered list
       submittedBy: getUserNameById(users, combo.submittedBy),
     });
   });
@@ -39,7 +40,7 @@ export const queryFirestore = () => [
     collection: 'combos',
     orderBy: ['timestamp', 'desc'],
   },
-]
+];
 
 const getCharacterFilters = filters => {
   if (!filters.characters.length) return R.T;
