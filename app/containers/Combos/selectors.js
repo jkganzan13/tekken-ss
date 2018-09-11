@@ -40,7 +40,7 @@ const makeCombosFilters = () =>
 /**
  * Default selector used by Combos
  */
-
+// TODO: Manually sort by timestamp
 const makeSelectCombos = () =>
   createSelector(selectCombos(), makeCombosFilters(), filterCombos);
 

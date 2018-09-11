@@ -20,7 +20,7 @@ import {
   makeIsLoggedIn,
   makeSelectFirebaseAuth,
 } from 'common/selectors';
-import IconText from 'components/IconText';
+import Rating from 'components/Rating';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
 import CharacterDropdown from 'components/CharacterDropdown';
@@ -29,7 +29,12 @@ import makeSelectCombos, { makeCombosFilters } from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
-import { getImgByCharacterName, queryFirestore, calculateDate } from './util';
+import {
+  getImgByCharacterName,
+  queryFirestore,
+  calculateDate,
+  isRatedByCurrentUser,
+} from './util';
 import * as Styled from './Styled';
 
 const Filters = props => (
@@ -56,13 +61,18 @@ Filters.propTypes = {
 };
 
 function Combos(props) {
+  const userId = props.auth.uid;
+
+  // TODO: should not rate own combo
   const renderCombo = item => (
     <List.Item
       key={item.name}
       actions={[
-        <IconText
-          type="star-o"
-          text={item.ratings ? item.ratings.length : 0}
+        <Rating
+          disabled={!props.isLoggedIn}
+          isRated={isRatedByCurrentUser(userId, item.ratings)}
+          value={item.ratings ? item.ratings.length : 0}
+          onChange={rating => props.actions.rateCombo(item, userId, !!rating)}
         />,
       ]}
     >
@@ -70,7 +80,9 @@ function Combos(props) {
         avatar={<Avatar src={getImgByCharacterName(item.name)} />}
         title={<span>{item.name}</span>}
         // Replace this with display name once implememted (Issue #4)
-        description={calculateDate(item.timestamp.seconds)}
+        description={calculateDate(
+          item.createdAt ? item.createdAt.seconds : item.timestamp.seconds,
+        )}
       />
       {item.combo}
     </List.Item>
@@ -96,7 +108,7 @@ function Combos(props) {
           onSubmit={combo =>
             props.actions.addCombo({
               ...combo,
-              submittedBy: props.auth.uid,
+              submittedBy: userId,
             })
           }
         />
