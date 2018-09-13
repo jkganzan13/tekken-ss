@@ -19,10 +19,25 @@ const selectCombosFromFirestore = state =>
   fromJS(
     R.pathOr(
       initialState.get('comboList'),
-      ['ordered', 'combos'],
+      ['data', 'combos'],
       state.get('firestore'),
     ),
   );
+
+/**
+ * Manual sort combos
+ * Problem: Ordered collection does not remove item from ratings
+ * Solution: use firestore.data instead and manual sort
+ */
+const sortByTimestamp = R.sort(
+  R.descend(c => (c.createdAt ? c.createdAt.seconds : c.timestamp.seconds)),
+);
+
+const mergeAndSortCombos = R.pipe(
+  mergeCombosAndUsers,
+  sortByTimestamp,
+);
+/* End */
 
 const selectFilters = state =>
   state.getIn(['combos', 'filters'], initialState.get('filters'));
@@ -31,7 +46,7 @@ const selectCombos = () =>
   createSelector(
     selectCombosFromFirestore,
     selectUsersFirebase,
-    (combos, users) => mergeCombosAndUsers(combos.toJS(), users),
+    (combos, users) => mergeAndSortCombos(combos.toJS(), users),
   );
 
 const makeCombosFilters = () =>
@@ -40,7 +55,6 @@ const makeCombosFilters = () =>
 /**
  * Default selector used by Combos
  */
-
 const makeSelectCombos = () =>
   createSelector(selectCombos(), makeCombosFilters(), filterCombos);
 

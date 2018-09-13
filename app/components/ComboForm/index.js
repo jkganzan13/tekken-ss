@@ -6,9 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { message, Button, Input } from 'antd';
+import { Button, Input } from 'antd';
 import Combo from 'components/Combo';
 import CharacterDropdown from 'components/CharacterDropdown';
+import { message } from 'utils/notifications';
 import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -28,7 +29,7 @@ export class ComboForm extends React.Component {
       return acc;
     }, '');
     if (error) {
-      message.error(`Invalid input: ${error}`, 3);
+      message.error(`Invalid input: ${error}`);
       return false;
     }
     return true;
