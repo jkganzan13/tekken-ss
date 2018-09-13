@@ -10,10 +10,11 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { List, Avatar, Input, notification } from 'antd';
+import { List, Avatar } from 'antd';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { notification } from 'utils/notifications';
 import ComboForm from 'components/ComboForm';
 import {
   makeIsLoading,
@@ -23,7 +24,7 @@ import {
 import Rating from 'components/Rating';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
-import CharacterDropdown from 'components/CharacterDropdown';
+import Filters from 'components/Filters';
 
 import makeSelectCombos, { makeCombosFilters } from './selectors';
 import reducer from './reducer';
@@ -37,71 +38,41 @@ import {
 } from './util';
 import * as Styled from './Styled';
 
-const Filters = props => (
-  <Styled.StyledHeader>
-    <span>Filters:</span>
-    <CharacterDropdown
-      mode="multiple"
-      value={props.filters.characters}
-      onChange={e =>
-        props.onChange({ key: 'characters', value: e.target.value })
-      }
-    />
-    <Input
-      value={props.filters.combo}
-      placeholder="Combo"
-      onChange={e => props.onChange({ key: 'combo', value: e.target.value })}
-    />
-  </Styled.StyledHeader>
-);
-
-Filters.propTypes = {
-  onChange: PropTypes.func,
-  filters: PropTypes.object,
-};
-
 const getRatingOnChange = (props, combo) => {
   const enabledFn = rating =>
     props.actions.rateCombo(combo, props.auth.uid, !!rating);
   const disabledFn = () =>
-    notification.warning({
-      placement: 'topRight',
-      bottom: 50,
-      duration: 5,
-      message: 'You are not logged in',
-      description: 'Please login to rate combos.',
-    });
+    notification.warning(
+      'You are not logged in',
+      'Please login to rate combos.',
+    );
   return props.isLoggedIn ? enabledFn : disabledFn;
 };
 
+const renderCombo = props => item => (
+  <List.Item
+    key={item.name}
+    actions={[
+      <Rating
+        isRated={isRatedByCurrentUser(props.auth.uid, item.ratings)}
+        value={item.ratings ? item.ratings.length : 0}
+        onChange={getRatingOnChange(props, item)}
+      />,
+    ]}
+  >
+    <List.Item.Meta
+      avatar={<Avatar src={getImgByCharacterName(item.name)} />}
+      title={<span>{item.name}</span>}
+      // Replace this with display name once implememted (Issue #4)
+      description={calculateDate(
+        item.createdAt ? item.createdAt.seconds : item.timestamp.seconds,
+      )}
+    />
+    {item.combo}
+  </List.Item>
+);
+
 function Combos(props) {
-  const userId = props.auth.uid;
-
-  // TODO: should not rate own combo
-  const renderCombo = item => (
-    <List.Item
-      key={item.name}
-      actions={[
-        <Rating
-          // disabled={!props.isLoggedIn}
-          isRated={isRatedByCurrentUser(userId, item.ratings)}
-          value={item.ratings ? item.ratings.length : 0}
-          onChange={getRatingOnChange(props, item)}
-        />,
-      ]}
-    >
-      <List.Item.Meta
-        avatar={<Avatar src={getImgByCharacterName(item.name)} />}
-        title={<span>{item.name}</span>}
-        // Replace this with display name once implememted (Issue #4)
-        description={calculateDate(
-          item.createdAt ? item.createdAt.seconds : item.timestamp.seconds,
-        )}
-      />
-      {item.combo}
-    </List.Item>
-  );
-
   return (
     <CommonContainer>
       <Styled.Container>
@@ -114,7 +85,7 @@ function Combos(props) {
           }
           dataSource={props.combos}
           isLoading={props.isLoading}
-          renderItem={renderCombo}
+          renderItem={renderCombo(props)}
         />
       </Styled.Container>
       {props.isLoggedIn && (
@@ -122,7 +93,7 @@ function Combos(props) {
           onSubmit={combo =>
             props.actions.addCombo({
               ...combo,
-              submittedBy: userId,
+              submittedBy: props.auth.uid,
             })
           }
         />
