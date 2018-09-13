@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { List, Avatar, Input } from 'antd';
+import { List, Avatar, Input, notification } from 'antd';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -60,6 +60,20 @@ Filters.propTypes = {
   filters: PropTypes.object,
 };
 
+const getRatingOnChange = (props, combo) => {
+  const enabledFn = rating =>
+    props.actions.rateCombo(combo, props.auth.uid, !!rating);
+  const disabledFn = () =>
+    notification.warning({
+      placement: 'topRight',
+      bottom: 50,
+      duration: 5,
+      message: 'You are not logged in',
+      description: 'Please login to rate combos.',
+    });
+  return props.isLoggedIn ? enabledFn : disabledFn;
+};
+
 function Combos(props) {
   const userId = props.auth.uid;
 
@@ -69,10 +83,10 @@ function Combos(props) {
       key={item.name}
       actions={[
         <Rating
-          disabled={!props.isLoggedIn}
+          // disabled={!props.isLoggedIn}
           isRated={isRatedByCurrentUser(userId, item.ratings)}
           value={item.ratings ? item.ratings.length : 0}
-          onChange={rating => props.actions.rateCombo(item, userId, !!rating)}
+          onChange={getRatingOnChange(props, item)}
         />,
       ]}
     >
