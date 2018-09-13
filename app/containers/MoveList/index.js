@@ -26,8 +26,7 @@ import { moveListColumns } from './data';
 /* eslint-disable react/prefer-stateless-function */
 export class MoveList extends React.PureComponent {
   componentDidMount() {
-    // fetch data
-    this.props.loadMoveList();
+    this.props.actions.loadMoveList();
   }
 
   componentDidUpdate() {
@@ -79,7 +78,6 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions, dispatch),
-    loadMoveList: () => dispatch(actions.loadMoveList()),
   };
 }
 

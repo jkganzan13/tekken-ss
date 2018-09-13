@@ -18,11 +18,14 @@ const selectCombosDomain = state => state.get('combos', initialState);
 const selectCombosFromFirestore = state =>
   fromJS(
     R.pathOr(
-      initialState.get('comboList'),
+      initialState.get('combos'),
       ['data', 'combos'],
       state.get('firestore'),
     ),
   );
+
+const selectCombosFromReducer = state =>
+  fromJS(state.getIn(['combos', 'combos'], initialState.get('combos')));
 
 /**
  * Manual sort combos
@@ -44,13 +47,18 @@ const selectFilters = state =>
 
 const selectCombos = () =>
   createSelector(
-    selectCombosFromFirestore,
+    selectCombosFromReducer,
     selectUsersFirebase,
-    (combos, users) => mergeAndSortCombos(combos.toJS(), users),
+    (combos, users) => {
+      return mergeAndSortCombos(combos.toJS(), users)
+    },
   );
 
 const makeCombosFilters = () =>
   createSelector(selectFilters, substate => substate.toJS());
+
+const makeIsLoading = () =>
+  createSelector(selectCombosDomain, substate => substate.toJS().isLoading);
 
 /**
  * Default selector used by Combos
@@ -59,4 +67,4 @@ const makeSelectCombos = () =>
   createSelector(selectCombos(), makeCombosFilters(), filterCombos);
 
 export default makeSelectCombos;
-export { selectCombosDomain, makeCombosFilters };
+export { selectCombosDomain, makeCombosFilters, makeIsLoading };

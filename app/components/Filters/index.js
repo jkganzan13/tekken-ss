@@ -15,10 +15,8 @@ const Filters = props => (
     <span>Filters:</span>
     <CharacterDropdown
       mode="multiple"
-      value={props.filters.characters}
-      onChange={e =>
-        props.onChange({ key: 'characters', value: e.target.value })
-      }
+      value={props.filters.name}
+      onChange={e => props.onChange({ key: 'name', value: e.target.value })}
     />
     <Input
       value={props.filters.combo}
