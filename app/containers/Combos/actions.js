@@ -7,9 +7,10 @@ import R from 'ramda';
 import {
   ADD_COMBO,
   RATE_COMBO,
-  UPDATE_FILTER,
-  LOAD_COMBOS,
+  FILTER_COMBOS,
+  QUERY_COMBOS,
   UPDATE_COMBOS,
+  UPDATE_FILTER,
 } from './constants';
 
 export function addCombo(newCombo) {
@@ -40,6 +41,13 @@ export function rateCombo(combo, userId, rating) {
   };
 }
 
+export function filterCombos(payload) {
+  return {
+    type: FILTER_COMBOS,
+    payload,
+  };
+}
+
 export function updateFilter(payload) {
   return {
     type: UPDATE_FILTER,
@@ -47,9 +55,9 @@ export function updateFilter(payload) {
   };
 }
 
-export function loadCombos() {
+export function queryCombos() {
   return {
-    type: LOAD_COMBOS,
+    type: QUERY_COMBOS,
   };
 }
 

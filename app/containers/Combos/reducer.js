@@ -5,7 +5,13 @@
  */
 
 import { fromJS } from 'immutable';
-import { LOAD_COMBOS, UPDATE_COMBOS } from './constants';
+import {
+  QUERY_COMBOS,
+  UPDATE_COMBOS,
+  UPDATE_FILTER,
+  RATE_COMBO,
+  ADD_COMBO,
+} from './constants';
 
 export const initialState = fromJS({
   filters: {
@@ -19,12 +25,15 @@ export const initialState = fromJS({
 
 function combosReducer(state = initialState, action) {
   switch (action.type) {
-    // case UPDATE_FILTER:
-    //   return state.setIn(['filters', action.payload.key], action.payload.value);
-    case LOAD_COMBOS:
+    case ADD_COMBO:
+    case QUERY_COMBOS:
       return state.set('isLoading', true);
+    case UPDATE_FILTER:
+      return state
+        .set('isLoading', true)
+        .setIn(['filters', action.payload.key], action.payload.value);
     case UPDATE_COMBOS:
-      return state.set('combos', action.payload.combos).set('isLoading', false);
+      return state.set('isLoading', false).set('combos', action.payload.combos);
     default:
       return state;
   }

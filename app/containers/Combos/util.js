@@ -56,3 +56,14 @@ export const filterCombos = (combos, filters) => {
 
 export const isRatedByCurrentUser = (userId, ratings = []) =>
   !!ratings.find(r => r.userId === userId);
+
+export const getFilterQuery = filters =>
+  Object.keys(filters).reduce((acc, key) => {
+    const filter = filters[key];
+    if (Array.isArray(filter) && filter.length) acc[key] = filter;
+    // TODO: combo and damage filters
+    return acc;
+  }, {});
+
+export const updateCombosById = (combos, id, props = {}) =>
+  combos.map(c => (c.id === id ? R.merge(c, props) : c));

@@ -1,3 +1,4 @@
+import R from 'ramda';
 import linq from 'linq2fire';
 import { getFirestore } from 'redux-firestore';
 
@@ -13,8 +14,8 @@ const mapDocIds = docs =>
     ...doc.data(),
   }));
 
-export const queryCollection = (collection, query = null) => {
+export const queryCollection = (collection, query = {}) => {
   let $col = linq(getFirestore()).from(collection);
-  if (query) $col = $col.where(query);
+  if (R.empty(query)) $col = $col.where(query);
   return $col.get().then(mapDocIds);
 };

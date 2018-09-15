@@ -63,8 +63,7 @@ const makeIsLoading = () =>
 /**
  * Default selector used by Combos
  */
-const makeSelectCombos = () =>
-  createSelector(selectCombos(), makeCombosFilters(), filterCombos);
+const makeSelectCombos = () => selectCombos();
 
 export default makeSelectCombos;
 export { selectCombosDomain, makeCombosFilters, makeIsLoading };

@@ -71,18 +71,16 @@ const renderCombo = props => item => (
 
 export class Combos extends React.PureComponent {
   componentDidMount() {
-    this.props.actions.loadCombos();
+    this.props.actions.queryCombos();
   }
   render() {
-    console.log('render', this.props);
-
     return (
       <CommonContainer>
         <Styled.Container>
           <DataList
             header={
               <Filters
-                onChange={this.props.actions.updateFilter}
+                onChange={this.props.actions.filterCombos}
                 filters={this.props.filters}
               />
             }
