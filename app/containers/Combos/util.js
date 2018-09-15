@@ -26,7 +26,6 @@ export const mergeCombosAndUsers = (combos = {}, users = {}) =>
   R.keys(combos).map(k => {
     const combo = combos[k];
     return R.merge(combo, {
-      id: k, // Remove this if using ordered list
       submittedBy: getUserNameById(users, combo.submittedBy),
     });
   });
@@ -43,9 +42,9 @@ export const queryFirestore = () => [
 ];
 
 const getCharacterFilters = filters => {
-  if (!filters.characters.length) return R.T;
-  const characters = filters.characters.map(c => R.propEq('name', c));
-  return R.anyPass(characters);
+  if (!filters.name.length) return R.T;
+  const name = filters.name.map(c => R.propEq('name', c));
+  return R.anyPass(name);
 };
 
 export const filterCombos = (combos, filters) => {
@@ -57,3 +56,14 @@ export const filterCombos = (combos, filters) => {
 
 export const isRatedByCurrentUser = (userId, ratings = []) =>
   !!ratings.find(r => r.userId === userId);
+
+export const getFilterQuery = filters =>
+  Object.keys(filters).reduce((acc, key) => {
+    const filter = filters[key];
+    if (Array.isArray(filter) && filter.length) acc[key] = filter;
+    // TODO: combo and damage filters
+    return acc;
+  }, {});
+
+export const updateCombosById = (combos, id, props = {}) =>
+  combos.map(c => (c.id === id ? R.merge(c, props) : c));

@@ -9,30 +9,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 import { List, Avatar } from 'antd';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { notification } from 'utils/notifications';
 import ComboForm from 'components/ComboForm';
-import {
-  makeIsLoading,
-  makeIsLoggedIn,
-  makeSelectFirebaseAuth,
-} from 'common/selectors';
+import { makeIsLoggedIn, makeSelectFirebaseAuth } from 'common/selectors';
 import Rating from 'components/Rating';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
 import Filters from 'components/Filters';
 
-import makeSelectCombos, { makeCombosFilters } from './selectors';
+import makeSelectCombos, {
+  makeCombosFilters,
+  makeIsLoading,
+} from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
 import {
   getImgByCharacterName,
-  queryFirestore,
   calculateDate,
   isRatedByCurrentUser,
 } from './util';
@@ -72,34 +69,39 @@ const renderCombo = props => item => (
   </List.Item>
 );
 
-function Combos(props) {
-  return (
-    <CommonContainer>
-      <Styled.Container>
-        <DataList
-          header={
-            <Filters
-              onChange={props.actions.updateFilter}
-              filters={props.filters}
-            />
-          }
-          dataSource={props.combos}
-          isLoading={props.isLoading}
-          renderItem={renderCombo(props)}
-        />
-      </Styled.Container>
-      {props.isLoggedIn && (
-        <ComboForm
-          onSubmit={combo =>
-            props.actions.addCombo({
-              ...combo,
-              submittedBy: props.auth.uid,
-            })
-          }
-        />
-      )}
-    </CommonContainer>
-  );
+export class Combos extends React.PureComponent {
+  componentDidMount() {
+    this.props.actions.queryCombos();
+  }
+  render() {
+    return (
+      <CommonContainer>
+        <Styled.Container>
+          <DataList
+            header={
+              <Filters
+                onChange={this.props.actions.filterCombos}
+                filters={this.props.filters}
+              />
+            }
+            dataSource={this.props.combos}
+            isLoading={this.props.isLoading}
+            renderItem={renderCombo(this.props)}
+          />
+        </Styled.Container>
+        {this.props.isLoggedIn && (
+          <ComboForm
+            onSubmit={combo =>
+              this.props.actions.addCombo({
+                ...combo,
+                submittedBy: this.props.auth.uid,
+              })
+            }
+          />
+        )}
+      </CommonContainer>
+    );
+  }
 }
 
 Combos.propTypes = {
@@ -137,5 +139,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-  firestoreConnect(queryFirestore),
 )(Combos);

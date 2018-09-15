@@ -5,21 +5,35 @@
  */
 
 import { fromJS } from 'immutable';
-import { UPDATE_FILTER } from './constants';
+import {
+  QUERY_COMBOS,
+  UPDATE_COMBOS,
+  UPDATE_FILTER,
+  RATE_COMBO,
+  ADD_COMBO,
+} from './constants';
 
 export const initialState = fromJS({
   filters: {
-    characters: [],
+    name: [],
     combo: '',
     damage: '',
   },
-  comboList: [],
+  combos: [],
+  isLoading: false,
 });
 
 function combosReducer(state = initialState, action) {
   switch (action.type) {
+    case ADD_COMBO:
+    case QUERY_COMBOS:
+      return state.set('isLoading', true);
     case UPDATE_FILTER:
-      return state.setIn(['filters', action.payload.key], action.payload.value);
+      return state
+        .set('isLoading', true)
+        .setIn(['filters', action.payload.key], action.payload.value);
+    case UPDATE_COMBOS:
+      return state.set('isLoading', false).set('combos', action.payload.combos);
     default:
       return state;
   }
