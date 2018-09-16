@@ -9,7 +9,6 @@ import {
   QUERY_COMBOS,
   UPDATE_COMBOS,
   UPDATE_FILTER,
-  RATE_COMBO,
   ADD_COMBO,
 } from './constants';
 

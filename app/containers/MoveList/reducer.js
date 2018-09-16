@@ -27,7 +27,6 @@ function moveListReducer(state = initialState, action) {
     case LOAD_MOVE_LIST_ERROR:
       return state.set('loading', false);
     case SELECT_CHARACTER:
-      console.log(`selected: ${action.payload}`);
       return state.set('selected', action.payload);
     default:
       return state;

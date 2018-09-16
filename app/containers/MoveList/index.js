@@ -25,10 +25,6 @@ import { moveListColumns } from './data';
 
 /* eslint-disable react/prefer-stateless-function */
 export class MoveList extends React.PureComponent {
-  componentDidMount() {
-    this.props.actions.loadMoveList();
-  }
-
   componentDidUpdate() {
     if (this.props.moveList.selected && this.tableRef) {
       window.scrollTo({

@@ -1,3 +1,4 @@
+import movelist from 'constants/movelist.json';
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
@@ -17,10 +18,10 @@ const selectMoveListDomain = state => state.get('moveList', initialState);
 
 const makeSelectMoveList = () =>
   createSelector(selectMoveListDomain, substate => {
-    const { selected, moves } = substate.toJS();
+    const { selected } = substate.toJS();
     return {
       selected,
-      selectedMoves: moves[selected] ? moves[selected].data : [],
+      selectedMoves: movelist[selected] || [],
     };
   });
 

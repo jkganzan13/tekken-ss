@@ -18,6 +18,12 @@ const CHARACTERS = [
     ss: DIRECTION.LEFT,
   },
   {
+    key: 'anna',
+    name: 'Anna',
+    // img: require('images/thumbnails/anna_thumbnail.png'),
+    ss: DIRECTION.LEFT,
+  },
+  {
     key: 'asuka',
     name: 'Asuka',
     img: require('images/thumbnails/asuka_thumbnail.png'),
@@ -27,6 +33,18 @@ const CHARACTERS = [
     key: 'bob',
     name: 'Bob',
     img: require('images/thumbnails/bob_thumbnail.png'),
+    ss: DIRECTION.RIGHT,
+  },
+  {
+    key: 'bryan',
+    name: 'Bryan',
+    img: require('images/thumbnails/bryan_thumbnail.png'),
+    ss: DIRECTION.RIGHT,
+  },
+  {
+    key: 'claudio',
+    name: 'Claudio',
+    img: require('images/thumbnails/claudio_thumbnail.png'),
     ss: DIRECTION.RIGHT,
   },
   {
@@ -78,7 +96,7 @@ const CHARACTERS = [
     ss: DIRECTION.RIGHT,
   },
   {
-    key: 'jack-7',
+    key: 'jack7',
     name: 'Jack 7',
     img: require('images/thumbnails/jack7_thumbnail.png'),
     ss: DIRECTION.LEFT,
@@ -143,6 +161,12 @@ const CHARACTERS = [
     img: require('images/thumbnails/lee_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
+  // {
+  //   key: 'lei',
+  //   name: 'Lei',
+  //   img: require('images/thumbnails/lei_thumbnail.png'),
+  //   ss: DIRECTION.LEFT,
+  // },
   {
     key: 'leo',
     name: 'Leo',
@@ -180,6 +204,12 @@ const CHARACTERS = [
     ss: DIRECTION.RIGHT,
   },
   {
+    key: 'noctis',
+    name: 'Noctis',
+    // img: require('images/thumbnails/noctis_thumbnail.png'),
+    ss: DIRECTION.LEFT,
+  },
+  {
     key: 'paul',
     name: 'Paul',
     img: require('images/thumbnails/paul_thumbnail.png'),
@@ -198,7 +228,7 @@ const CHARACTERS = [
     ss: DIRECTION.LEFT,
   },
   {
-    key: 'ling',
+    key: 'xiaoyu',
     name: 'Xiaoyu',
     img: require('images/thumbnails/xiaoyu_thumbnail.png'),
     ss: DIRECTION.LEFT,
@@ -209,12 +239,6 @@ const CHARACTERS = [
     img: require('images/thumbnails/yoshimitsu_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
-  // {
-  //   key: 'noctis',
-  //   name: 'Noctis',
-  //   img: require('images/thumbnails/yoshimitsu_thumbnail.png'),
-  //   ss: DIRECTION.LEFT,
-  // },
 ];
 
 export const CHARACTER_NAMES = CHARACTERS.map(c => c.name);
