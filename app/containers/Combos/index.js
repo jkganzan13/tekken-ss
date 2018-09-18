@@ -15,7 +15,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { notification } from 'utils/notifications';
 import ComboForm from 'components/ComboForm';
-import { makeIsLoggedIn, makeSelectFirebaseAuth } from 'common/selectors';
+import { makeIsLoggedIn } from 'common/selectors';
 import Rating from 'components/Rating';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
@@ -24,20 +24,17 @@ import Filters from 'components/Filters';
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
+  makeUserId,
 } from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
-import {
-  getImgByCharacterName,
-  calculateDate,
-  isRatedByCurrentUser,
-} from './util';
+import { getImgByCharacterName, calculateDate } from './util';
 import * as Styled from './Styled';
 
 const getRatingOnChange = (props, combo) => {
   const enabledFn = rating =>
-    props.actions.rateCombo(combo, props.auth.uid, !!rating);
+    props.actions.rateCombo(combo, props.userId, !!rating);
   const disabledFn = () =>
     notification.warning(
       'You are not logged in',
@@ -51,8 +48,8 @@ const renderCombo = props => item => (
     key={item.name}
     actions={[
       <Rating
-        isRated={isRatedByCurrentUser(props.auth.uid, item.ratings)}
-        value={item.ratings ? item.ratings.length : 0}
+        isRated={Boolean(item.is_rated_by_user)}
+        value={item.total_ratings}
         onChange={getRatingOnChange(props, item)}
       />,
     ]}
@@ -61,9 +58,7 @@ const renderCombo = props => item => (
       avatar={<Avatar src={getImgByCharacterName(item.name)} />}
       title={<span>{item.name}</span>}
       // Replace this with display name once implememted (Issue #4)
-      description={calculateDate(
-        item.createdAt ? item.createdAt.seconds : item.timestamp.seconds,
-      )}
+      description={calculateDate(item.created_at)}
     />
     {item.combo}
   </List.Item>
@@ -94,7 +89,7 @@ export class Combos extends React.PureComponent {
             onSubmit={combo =>
               this.props.actions.addCombo({
                 ...combo,
-                submittedBy: this.props.auth.uid,
+                submitted_by: this.props.userId,
               })
             }
           />
@@ -108,7 +103,7 @@ Combos.propTypes = {
   combos: PropTypes.array.isRequired,
   isLoggedIn: PropTypes.bool,
   isLoading: PropTypes.bool,
-  auth: PropTypes.object,
+  userId: PropTypes.string,
   actions: PropTypes.object,
   filters: PropTypes.object,
 };
@@ -117,7 +112,7 @@ const mapStateToProps = createStructuredSelector({
   combos: makeSelectCombos(),
   isLoggedIn: makeIsLoggedIn(),
   isLoading: makeIsLoading(),
-  auth: makeSelectFirebaseAuth(),
+  userId: makeUserId(),
   filters: makeCombosFilters(),
 });
 

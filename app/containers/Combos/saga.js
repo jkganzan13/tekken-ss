@@ -1,9 +1,6 @@
 import { all, takeLatest, call, put, select } from 'redux-saga/effects';
-import {
-  addFirestore,
-  updateFirestore,
-  queryCollection,
-} from 'utils/firestore';
+import { updateFirestore } from 'utils/firestore';
+import request from 'utils/request';
 import {
   FIRESTORE_COMBOS_PATH,
   ADD_COMBO,
@@ -18,11 +15,8 @@ import { getFilterQuery, updateCombosById } from './util';
 export function* queryCombosSaga() {
   try {
     const filters = yield select(makeCombosFilters());
-    const combos = yield call(
-      queryCollection,
-      'combos',
-      getFilterQuery(filters),
-    );
+    const url = `${process.env.API_BASE_URL}/combos`;
+    const combos = yield call(request.get, url + getFilterQuery(filters));
     yield put(updateCombos({ combos }));
   } catch (e) {
     yield put(updateCombos({ combos: [] }));
@@ -30,7 +24,8 @@ export function* queryCombosSaga() {
 }
 
 export function* addComboSaga(action) {
-  yield call(addFirestore, FIRESTORE_COMBOS_PATH, action.payload);
+  const url = `${process.env.API_BASE_URL}/combos`;
+  yield call(request.post, url, action.payload);
   yield call(queryCombosSaga);
 }
 

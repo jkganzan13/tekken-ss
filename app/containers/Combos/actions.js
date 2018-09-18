@@ -13,13 +13,10 @@ import {
   UPDATE_FILTER,
 } from './constants';
 
-export function addCombo(newCombo) {
+export function addCombo(payload) {
   return {
     type: ADD_COMBO,
-    payload: {
-      ...newCombo,
-      createdAt: new Date(),
-    },
+    payload,
   };
 }
 
