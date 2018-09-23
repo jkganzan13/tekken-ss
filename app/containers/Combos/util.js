@@ -23,3 +23,15 @@ export const getFilterQuery = filters =>
 
 export const updateCombosById = (combos, id, props = {}) =>
   combos.map(c => (c.id === id ? R.merge(c, props) : c));
+
+export const updateRatingById = (combos, id, rating) =>
+  combos.map(c => {
+    if (c.id === id) {
+      const updatedTotal = rating ? c.total_ratings + 1 : c.total_ratings - 1;
+      return R.merge(c, {
+        total_ratings: Math.max(0, updatedTotal),
+        is_rated_by_user: rating,
+      });
+    }
+    return c;
+  });

@@ -33,8 +33,7 @@ import { getImgByCharacterName, calculateDate } from './util';
 import * as Styled from './Styled';
 
 const getRatingOnChange = (props, combo) => {
-  const enabledFn = rating =>
-    props.actions.rateCombo(combo, props.userId, !!rating);
+  const enabledFn = rating => props.actions.rateCombo({ id: combo.id, rating });
   const disabledFn = () =>
     notification.warning(
       'You are not logged in',

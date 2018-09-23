@@ -53,7 +53,10 @@ const post = (url, body) =>
     },
   });
 
+const del = url => fetch(url, { method: 'DELETE' });
+
 export default {
+  delete: del,
   fetch: request,
   get: request,
   post,

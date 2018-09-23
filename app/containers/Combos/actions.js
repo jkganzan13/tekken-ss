@@ -3,7 +3,6 @@
  * Combos actions
  *
  */
-import R from 'ramda';
 import {
   ADD_COMBO,
   RATE_COMBO,
@@ -20,18 +19,11 @@ export function addCombo(payload) {
   };
 }
 
-const updateRatings = (userId, rating, ratings = []) => {
-  let newRatings = [...ratings];
-  if (rating) newRatings.push({ userId, upvote: true });
-  else newRatings = R.reject(r => r.userId === userId, ratings);
-  return newRatings;
-};
-
-export function rateCombo(combo, userId, rating) {
-  const payload = {
-    id: combo.id,
-    ratings: updateRatings(userId, rating, combo.ratings),
-  };
+/**
+ * @param {String} payload.id      - Combo ID
+ * @param {Boolean} payload.rating - Rating { false: remove rating, true: add rating }
+ */
+export function rateCombo(payload) {
   return {
     type: RATE_COMBO,
     payload,
