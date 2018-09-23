@@ -1,11 +1,6 @@
 import { all, takeLatest, call, put, select } from 'redux-saga/effects';
+import request from 'utils/request';
 import {
-  addFirestore,
-  updateFirestore,
-  queryCollection,
-} from 'utils/firestore';
-import {
-  FIRESTORE_COMBOS_PATH,
   ADD_COMBO,
   RATE_COMBO,
   QUERY_COMBOS,
@@ -13,34 +8,39 @@ import {
 } from './constants';
 import { updateCombos, updateFilter } from './actions';
 import makeSelectCombos, { makeCombosFilters } from './selectors';
-import { getFilterQuery, updateCombosById } from './util';
+import { getFilterQuery, updateRatingById } from './util';
 
 export function* queryCombosSaga() {
   try {
     const filters = yield select(makeCombosFilters());
-    const combos = yield call(
-      queryCollection,
-      'combos',
-      getFilterQuery(filters),
-    );
+    const url = `${process.env.API_BASE_URL}/combos`;
+    const combos = yield call(request.get, url + getFilterQuery(filters));
     yield put(updateCombos({ combos }));
   } catch (e) {
     yield put(updateCombos({ combos: [] }));
   }
 }
 
-export function* addComboSaga(action) {
-  yield call(addFirestore, FIRESTORE_COMBOS_PATH, action.payload);
+export function* addComboSaga({ payload }) {
+  const url = `${process.env.API_BASE_URL}/combos`;
+  yield call(request.post, url, payload);
   yield call(queryCombosSaga);
 }
 
 export function* rateComboSaga({ payload }) {
-  const ratings = { ratings: payload.ratings };
   const combos = yield select(makeSelectCombos());
   yield put(
-    updateCombos({ combos: updateCombosById(combos, payload.id, ratings) }),
+    updateCombos({
+      combos: updateRatingById(combos, payload.id, payload.rating),
+    }),
   );
-  yield call(updateFirestore, FIRESTORE_COMBOS_PATH, payload.id, ratings);
+
+  const requestFn = payload.rating ? request.post : request.delete;
+  const url = `${process.env.API_BASE_URL}/ratings${
+    payload.rating ? '' : `/${payload.id}`
+  }`;
+  yield call(requestFn, url, { combo_id: payload.id });
+  yield call(queryCombosSaga);
 }
 
 export function* filterCombosSaga({ payload }) {

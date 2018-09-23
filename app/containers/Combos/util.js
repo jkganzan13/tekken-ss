@@ -1,69 +1,37 @@
 import R from 'ramda';
 import CHARACTERS from 'constants/characters';
 
-const calculateAverage = (ratings = []) =>
-  ratings.reduce((acc, rating) => acc + rating.value, 0) / ratings.length;
-
-const roundDownToNearestHalf = n =>
-  parseFloat((Math.floor(n * 2) / 2).toFixed(1));
-
-export const calculateRating = R.pipe(
-  calculateAverage,
-  roundDownToNearestHalf,
-);
-
-export const calculateDate = seconds =>
-  new Date(seconds * 1000).toLocaleDateString('en-US', {
+export const calculateDate = utc =>
+  new Date(utc).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   });
 
-const getUserNameById = (users = {}, id) =>
-  R.pathOr('Anonymous', [id, 'metadata', 'name'], users);
-
-export const mergeCombosAndUsers = (combos = {}, users = {}) =>
-  R.keys(combos).map(k => {
-    const combo = combos[k];
-    return R.merge(combo, {
-      submittedBy: getUserNameById(users, combo.submittedBy),
-    });
-  });
-
 export const getImgByCharacterName = name =>
   CHARACTERS.find(c => c.name === name).img;
 
-export const queryFirestore = () => [
-  { collection: 'users' },
-  {
-    collection: 'combos',
-    orderBy: ['timestamp', 'desc'],
-  },
-];
-
-const getCharacterFilters = filters => {
-  if (!filters.name.length) return R.T;
-  const name = filters.name.map(c => R.propEq('name', c));
-  return R.anyPass(name);
-};
-
-export const filterCombos = (combos, filters) => {
-  const characterFilters = getCharacterFilters(filters);
-  const comboFilter = c => c.combo.includes(filters.combo.trim());
-  const filter = R.allPass([characterFilters, comboFilter]);
-  return combos.filter(filter);
-};
-
-export const isRatedByCurrentUser = (userId, ratings = []) =>
-  !!ratings.find(r => r.userId === userId);
-
 export const getFilterQuery = filters =>
   Object.keys(filters).reduce((acc, key) => {
+    let q = acc;
     const filter = filters[key];
-    if (Array.isArray(filter) && filter.length) acc[key] = filter;
-    // TODO: combo and damage filters
-    return acc;
-  }, {});
+    if (!R.isEmpty(filter)) {
+      q += acc ? `&${key}=${filter}` : `?${key}=${filter}`;
+    }
+    return q;
+  }, '');
 
 export const updateCombosById = (combos, id, props = {}) =>
   combos.map(c => (c.id === id ? R.merge(c, props) : c));
+
+export const updateRatingById = (combos, id, rating) =>
+  combos.map(c => {
+    if (c.id === id) {
+      const updatedTotal = rating ? c.total_ratings + 1 : c.total_ratings - 1;
+      return R.merge(c, {
+        total_ratings: Math.max(0, updatedTotal),
+        is_rated_by_user: rating,
+      });
+    }
+    return c;
+  });

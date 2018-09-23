@@ -39,8 +39,25 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export default function request(url, options) {
-  return fetch(url, options)
+const request = (url, options) =>
+  fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);
-}
+
+const post = (url, body) =>
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+const del = url => fetch(url, { method: 'DELETE' });
+
+export default {
+  delete: del,
+  fetch: request,
+  get: request,
+  post,
+};
