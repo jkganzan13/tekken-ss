@@ -1,23 +1,19 @@
 import Auth0Lock from 'auth0-lock';
 
-const lock = new Auth0Lock(
-  'm0UpvQv6d6Qd3clAPncO57u9snQ7Mx1B',
-  'jkganzan13.au.auth0.com',
-  {
-    auth: {
-      params: {
-        scope: 'openid profile email',
-      },
-      token: 'token id_token',
-      redirect: false,
-      audience: 'https://api.tekkenhub.com',
+const lock = new Auth0Lock(process.env.API_KEY, process.env.AUTH_DOMAIN, {
+  auth: {
+    params: {
+      scope: 'openid profile email',
     },
-    languageDictionary: {
-      title: 'TekkenHub',
-    },
-    autoclose: true,
+    token: 'token id_token',
+    redirect: false,
+    audience: 'https://api.tekkenhub.com',
   },
-);
+  languageDictionary: {
+    title: 'TekkenHub',
+  },
+  autoclose: true,
+});
 
 const setSession = authResult => {
   // Set the time that the Access Token will expire at
