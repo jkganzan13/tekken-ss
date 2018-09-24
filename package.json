@@ -145,6 +145,7 @@
   },
   "dependencies": {
     "antd": "3.9.0",
+    "auth0-lock": "^11.9.1",
     "babel-polyfill": "6.26.0",
     "chalk": "^2.4.1",
     "compression": "1.7.2",

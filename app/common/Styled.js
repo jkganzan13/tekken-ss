@@ -17,3 +17,8 @@ export const ListHeader = styled.div`
   font-size: 16px;
   font-weight: 500;
 `;
+
+export const AnchorButton = styled.button`
+  cursor: pointer;
+  float: right;
+`;
