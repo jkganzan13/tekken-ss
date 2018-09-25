@@ -24,20 +24,29 @@ const setSession = authResult => {
   localStorage.setItem('expires_at', expiresAt);
 };
 
-export const onAuthenticated = callback =>
-  lock.on('authenticated', authResult => {
-    console.log(authResult);
-    setSession(authResult);
-    lock.getUserInfo(authResult.accessToken, (error, profile) => {
-      if (error) {
-        // Handle error
-        console.log(error);
-        return;
-      }
+export const getAuthToken = () => localStorage.getItem('access_token');
 
-      // TODO: set in reducer
-      console.log('profile', profile);
-      callback(profile);
+export const isAuthenticated = () => {
+  const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+  const notExpired = new Date().getTime() < expiresAt;
+  return notExpired && getAuthToken();
+};
+
+export const getProfileFromToken = (token = getAuthToken()) =>
+  new Promise((res, rej) => {
+    lock.getUserInfo(token, (error, profile) => {
+      if (error) rej(error);
+      res(profile);
+    });
+  });
+
+export const onAuthenticated = () =>
+  new Promise((res, rej) => {
+    lock.on('authenticated', authResult => {
+      setSession(authResult);
+      getProfileFromToken(authResult.accessToken)
+        .then(res)
+        .catch(rej);
     });
   });
 
@@ -51,11 +60,4 @@ export const logout = () => {
   // Clear Access Token and ID Token from local storage
   localStorage.removeItem('access_token');
   localStorage.removeItem('expires_at');
-};
-
-export const isAuthenticated = () => {
-  // Check whether the current time is past the
-  // Access Token's expiry time
-  const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-  return new Date().getTime() < expiresAt;
 };

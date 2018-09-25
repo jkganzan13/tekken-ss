@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import { getAuthToken, isAuthenticated } from 'common/auth';
 
 /**
  * Parses the JSON returned by a network request
@@ -44,20 +45,34 @@ const request = (url, options) =>
     .then(checkStatus)
     .then(parseJSON);
 
-const post = (url, body) =>
-  fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json',
-    },
+const getHeaders = () =>
+  new Headers({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${getAuthToken()}`,
   });
 
-const del = url => fetch(url, { method: 'DELETE' });
+const get = url =>
+  request(url, {
+    method: 'GET',
+    headers: isAuthenticated() ? getHeaders() : undefined,
+  });
+
+const post = (url, body) =>
+  request(url, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: getHeaders(),
+  });
+
+const del = url =>
+  request(url, {
+    method: 'DELETE',
+    headers: getHeaders(),
+  });
 
 export default {
   delete: del,
   fetch: request,
-  get: request,
+  get,
   post,
 };

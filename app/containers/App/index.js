@@ -20,7 +20,13 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
 import { Layout } from 'antd';
 import injectReducer from 'utils/injectReducer';
-import { onAuthenticated, login, logout } from 'common/auth';
+import {
+  onAuthenticated,
+  login,
+  logout,
+  isAuthenticated,
+  getProfileFromToken,
+} from 'common/auth';
 import { selectProfile } from 'common/selectors';
 import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
@@ -32,8 +38,12 @@ import * as actions from './actions';
 /* eslint-disable react/prefer-stateless-function */
 class App extends React.PureComponent {
   componentDidMount() {
-    onAuthenticated(this.props.actions.updateProfile);
+    const profilePromise = isAuthenticated()
+      ? getProfileFromToken()
+      : onAuthenticated();
+    profilePromise.then(this.props.actions.updateProfile);
   }
+
   login = () => login();
 
   logout = () => {
