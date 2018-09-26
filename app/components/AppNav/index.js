@@ -33,13 +33,10 @@ function AppNav(props) {
 }
 
 AppNav.propTypes = {
-  firebase: PropTypes.shape({
-    login: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
-  }),
-  isLoggedIn: PropTypes.bool,
   profile: PropTypes.object,
   location: PropTypes.object,
+  onLogin: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 export default AppNav;

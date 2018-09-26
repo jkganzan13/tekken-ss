@@ -13,56 +13,98 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
-
 import { Layout } from 'antd';
-
+import injectReducer from 'utils/injectReducer';
+import {
+  onAuthenticated,
+  login,
+  logout,
+  isAuthenticated,
+  getProfileFromToken,
+} from 'common/auth';
+import { selectProfile } from 'common/selectors';
 import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
 import MoveList from 'containers/MoveList';
 import AppNav from 'components/AppNav';
-import { firebaseConnect } from 'react-redux-firebase';
-import { makeIsLoggedIn, makeSelectFirebaseProfile } from 'common/selectors';
+import * as comboActions from 'containers/Combos/actions';
+import reducer from './reducer';
+import * as appActions from './actions';
 
-function App(props) {
-  return (
-    <Layout>
-      <AppNav
-        firebase={props.firebase}
-        isLoggedIn={props.isLoggedIn}
-        profile={props.profile}
-        location={props.location}
-      />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/combos" component={Combos} />
-        <Route exact path="/moves" component={MoveList} />
-        <Route component={HomePage} />
-      </Switch>
-    </Layout>
-  );
+/* eslint-disable react/prefer-stateless-function */
+class App extends React.PureComponent {
+  componentDidMount() {
+    const profilePromise = isAuthenticated()
+      ? getProfileFromToken()
+      : onAuthenticated();
+    profilePromise.then(profile => {
+      this.props.actions.updateProfile(profile);
+      this.props.actions.queryCombos();
+    });
+  }
+
+  login = () => login();
+
+  logout = () => {
+    logout();
+    this.props.actions.updateProfile({});
+  };
+
+  render() {
+    const { props } = this;
+    return (
+      <Layout>
+        <AppNav
+          profile={props.profile}
+          location={props.location}
+          onLogin={this.login}
+          onLogout={this.logout}
+        />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/combos" component={Combos} />
+          <Route exact path="/moves" component={MoveList} />
+          <Route component={HomePage} />
+        </Switch>
+      </Layout>
+    );
+  }
 }
 
 App.propTypes = {
-  firebase: PropTypes.shape({
-    login: PropTypes.func.isRequired,
-  }),
-  isLoggedIn: PropTypes.bool,
+  actions: PropTypes.object,
   profile: PropTypes.object,
   location: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  isLoggedIn: makeIsLoggedIn(),
-  profile: makeSelectFirebaseProfile(),
+  profile: selectProfile,
 });
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        ...appActions,
+        ...comboActions,
+      },
+      dispatch,
+    ),
+  };
+}
+
+const withReducer = injectReducer({ key: 'app', reducer });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps),
-  firebaseConnect(),
+  withReducer,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(App);

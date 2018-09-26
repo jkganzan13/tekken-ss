@@ -35,4 +35,14 @@ injectGlobal`
     width: 10px;
     margin-left: 10px;
   }
+
+  .auth0-lock.auth0-lock {
+    .auth0-lock-header {
+      height: unset !important;
+    }
+
+    .auth0-lock-header-logo {
+      display: none !important;
+    }
+  }
 `;
