@@ -10,4 +10,6 @@ const selectProfile = createSelector(
   substate => substate.toJS().profile,
 );
 
-export { makeIsLoggedIn, selectProfile };
+const selectUserId = createSelector(selectProfile, profile => profile.sub);
+
+export { makeIsLoggedIn, selectProfile, selectUserId };

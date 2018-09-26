@@ -24,8 +24,6 @@ const makeCombosFilters = () =>
 const makeIsLoading = () =>
   createSelector(selectCombosDomain, substate => substate.toJS().isLoading);
 
-const makeUserId = () => () => 'user1';
-
 /**
  * Default selector used by Combos
  */
@@ -33,4 +31,4 @@ const makeSelectCombos = () =>
   createSelector(selectCombosFromReducer, combos => combos.toJS());
 
 export default makeSelectCombos;
-export { selectCombosDomain, makeCombosFilters, makeIsLoading, makeUserId };
+export { selectCombosDomain, makeCombosFilters, makeIsLoading };

@@ -32,8 +32,9 @@ import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
 import MoveList from 'containers/MoveList';
 import AppNav from 'components/AppNav';
+import * as comboActions from 'containers/Combos/actions';
 import reducer from './reducer';
-import * as actions from './actions';
+import * as appActions from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends React.PureComponent {
@@ -41,7 +42,10 @@ class App extends React.PureComponent {
     const profilePromise = isAuthenticated()
       ? getProfileFromToken()
       : onAuthenticated();
-    profilePromise.then(this.props.actions.updateProfile);
+    profilePromise.then(profile => {
+      this.props.actions.updateProfile(profile);
+      this.props.actions.queryCombos();
+    });
   }
 
   login = () => login();
@@ -84,7 +88,13 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(
+      {
+        ...appActions,
+        ...comboActions,
+      },
+      dispatch,
+    ),
   };
 }
 

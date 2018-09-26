@@ -15,7 +15,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { notification } from 'utils/notifications';
 import ComboForm from 'components/ComboForm';
-import { makeIsLoggedIn } from 'common/selectors';
+import { makeIsLoggedIn, selectUserId } from 'common/selectors';
 import Rating from 'components/Rating';
 import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
@@ -24,7 +24,6 @@ import Filters from 'components/Filters';
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
-  makeUserId,
 } from './selectors';
 import reducer from './reducer';
 import * as actions from './actions';
@@ -45,13 +44,15 @@ const getRatingOnChange = (props, combo) => {
 const renderCombo = props => item => (
   <List.Item
     key={item.name}
-    actions={[
-      <Rating
-        isRated={Boolean(item.is_rated_by_user)}
-        value={item.total_ratings}
-        onChange={getRatingOnChange(props, item)}
-      />,
-    ]}
+    actions={
+      props.userId !== item.submitted_by && [
+        <Rating
+          isRated={Boolean(item.is_rated_by_user)}
+          value={item.total_ratings}
+          onChange={getRatingOnChange(props, item)}
+        />,
+      ]
+    }
   >
     <List.Item.Meta
       avatar={<Avatar src={getImgByCharacterName(item.name)} />}
@@ -65,7 +66,7 @@ const renderCombo = props => item => (
 
 export class Combos extends React.PureComponent {
   componentDidMount() {
-    this.props.actions.queryCombos();
+    if (!this.props.combos.length) this.props.actions.queryCombos();
   }
   render() {
     return (
@@ -111,7 +112,7 @@ const mapStateToProps = createStructuredSelector({
   combos: makeSelectCombos(),
   isLoggedIn: makeIsLoggedIn(),
   isLoading: makeIsLoading(),
-  userId: makeUserId(),
+  userId: selectUserId,
   filters: makeCombosFilters(),
 });
 
