@@ -1,4 +1,6 @@
 import { injectGlobal } from 'styled-components';
+import injectFonts from 'assets/fonts';
+import background from 'images/background.jpg';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -8,12 +10,15 @@ injectGlobal`
     width: 100%;
   }
 
+  ${injectFonts()}
+
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Mental Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: url('${background}') repeat top center;
   }
 
   body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Mental Medium', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   #app {

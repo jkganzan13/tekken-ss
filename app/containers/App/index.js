@@ -31,7 +31,8 @@ import { selectProfile } from 'common/selectors';
 import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
 import MoveList from 'containers/MoveList';
-import AppNav from 'components/AppNav';
+// import AppNav from 'components/AppNav';
+import AppNav from 'components/common/Nav';
 import * as comboActions from 'containers/Combos/actions';
 import reducer from './reducer';
 import * as appActions from './actions';
@@ -56,12 +57,11 @@ class App extends React.PureComponent {
   };
 
   render() {
-    const { props } = this;
     return (
       <Layout>
         <AppNav
-          profile={props.profile}
-          location={props.location}
+          profile={this.props.profile}
+          location={this.props.location}
           onLogin={this.login}
           onLogout={this.logout}
         />
