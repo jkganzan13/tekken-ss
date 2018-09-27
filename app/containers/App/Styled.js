@@ -8,3 +8,7 @@ export const Content = styled(Layout.Content)`
     background: white;
   }
 `;
+
+export const Container = styled.div`
+  background: transparent;
+`;

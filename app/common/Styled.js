@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { Layout } from 'antd';
 
-export const CommonContainer = styled(Layout.Content)`
-  padding: 50px;
+export const CommonContainer = styled.div`
+  padding: 0.5rem 1rem;
 `;
 
 export const Title = styled.div`

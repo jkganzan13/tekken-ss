@@ -36,6 +36,7 @@ import AppNav from 'components/common/Nav';
 import * as comboActions from 'containers/Combos/actions';
 import reducer from './reducer';
 import * as appActions from './actions';
+import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends React.PureComponent {
@@ -58,7 +59,7 @@ class App extends React.PureComponent {
 
   render() {
     return (
-      <Layout>
+      <Styled.Container>
         <AppNav
           profile={this.props.profile}
           location={this.props.location}
@@ -71,7 +72,7 @@ class App extends React.PureComponent {
           <Route exact path="/moves" component={MoveList} />
           <Route component={HomePage} />
         </Switch>
-      </Layout>
+      </Styled.Container>
     );
   }
 }

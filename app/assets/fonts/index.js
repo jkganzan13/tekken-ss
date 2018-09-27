@@ -3,6 +3,13 @@ import MentalBold from './mental_bold.woff2';
 import MentalMedium from './mental_medium.woff2';
 import TrumpGothic from './TrumpGothicPro-Bold.woff2';
 
+export const FONT_NAMES = {
+  MENTAL_BLACK: 'Mental Black',
+  MENTAL_BOLD: 'Mental Bold',
+  MENTAL_MEDIUM: 'Mental Medium',
+  TRUMP_BOLD: 'Trump Bold',
+};
+
 export default () => `
   @font-face {
     font-family: Mental Black;

@@ -5,17 +5,22 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import * as Styled from './Styled';
 
-const Nav = () => (
+const Nav = props => (
   <div>
     <Desktop>
-      <DesktopNav />
+      <DesktopNav {...props} />
     </Desktop>
     <Mobile>
-      <MobileNav />
+      <MobileNav {...props} />
     </Mobile>
   </div>
 );
 
-Nav.propTypes = {};
+Nav.propTypes = {
+  profile: PropTypes.object,
+  location: PropTypes.object,
+  onLogin: PropTypes.func,
+  onLogout: PropTypes.func,
+};
 
 export default Nav;
