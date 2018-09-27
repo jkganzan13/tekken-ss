@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
-import { Layout } from 'antd';
 import injectReducer from 'utils/injectReducer';
 import {
   onAuthenticated,

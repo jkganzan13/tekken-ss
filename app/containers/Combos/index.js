@@ -41,33 +41,34 @@ const getRatingOnChange = (props, combo) => {
   return props.isLoggedIn ? enabledFn : disabledFn;
 };
 
-const renderCombo = props => item => (
-  <List.Item
-    key={item.name}
-    actions={
-      props.userId !== item.submitted_by && [
-        <Rating
-          isRated={Boolean(item.is_rated_by_user)}
-          value={item.total_ratings}
-          onChange={getRatingOnChange(props, item)}
-        />,
-      ]
-    }
-  >
-    <List.Item.Meta
-      avatar={<Avatar src={getImgByCharacterName(item.name)} />}
-      title={<span>{item.name}</span>}
-      // Replace this with display name once implememted (Issue #4)
-      description={calculateDate(item.created_at)}
-    />
-    {item.combo}
-  </List.Item>
-);
-
 export class Combos extends React.PureComponent {
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
   }
+
+  renderCombo = item => (
+    <List.Item
+      key={item.name}
+      actions={
+        this.props.userId !== item.submitted_by && [
+          <Rating
+            isRated={Boolean(item.is_rated_by_user)}
+            value={item.total_ratings}
+            onChange={getRatingOnChange(this.props, item)}
+          />,
+        ]
+      }
+    >
+      <List.Item.Meta
+        avatar={<Avatar src={getImgByCharacterName(item.name)} />}
+        title={<span>{item.name}</span>}
+        // Replace this with display name once implememted (Issue #4)
+        description={calculateDate(item.created_at)}
+      />
+      {item.combo}
+    </List.Item>
+  );
+
   render() {
     return (
       <CommonContainer>
@@ -81,7 +82,7 @@ export class Combos extends React.PureComponent {
             }
             dataSource={this.props.combos}
             isLoading={this.props.isLoading}
-            renderItem={renderCombo(this.props)}
+            renderItem={this.renderCombo}
           />
         </Styled.Container>
         {this.props.isLoggedIn && (
