@@ -10,9 +10,28 @@ export const Container = styled.div`
   padding: 1rem;
 `;
 
-export const FlexRow = styled.div`
-  line-height: 30px;
+export const Col = styled.div`
   margin-right: 1rem;
+  margin-left: 1rem;
 `;
 
-export const Text = styled.div``;
+export const Name = styled(Col)`
+  width: 80px;
+`;
+
+export const Damage = styled(Col)`
+  width: 16px;
+`;
+
+export const Text = styled.div`
+  font-size: 20px;
+`;
+
+export const SubText = styled.div`
+  opacity: 0.6;
+  font-size: 12px;
+`;
+
+export const Rating = styled.div`
+  margin-left: auto;
+`;

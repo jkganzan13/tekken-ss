@@ -7,15 +7,16 @@ import { getImgByCharacterName, calculateDate } from './util';
 
 const ListItem = ({ combo, onRatingChange, userId }) => (
   <Styled.Container>
-    <Styled.FlexRow>
+    <div>
       <Avatar src={getImgByCharacterName(combo.name)} />
-    </Styled.FlexRow>
-    <Styled.FlexRow>
+    </div>
+    <Styled.Name>
       <Styled.Text>{combo.name}</Styled.Text>
-      <Styled.Text>{calculateDate(combo.created_at)}</Styled.Text>
-    </Styled.FlexRow>
-    <Styled.FlexRow>{combo.combo}</Styled.FlexRow>
-    <Styled.FlexRow>
+      <Styled.SubText>{calculateDate(combo.created_at)}</Styled.SubText>
+    </Styled.Name>
+    <Styled.Damage>{combo.damage}</Styled.Damage>
+    <Styled.Col>{combo.combo}</Styled.Col>
+    <Styled.Rating>
       {userId !== combo.submitted_by && (
         <Rating
           isRated={Boolean(combo.is_rated_by_user)}
@@ -23,7 +24,7 @@ const ListItem = ({ combo, onRatingChange, userId }) => (
           onChange={onRatingChange}
         />
       )}
-    </Styled.FlexRow>
+    </Styled.Rating>
   </Styled.Container>
 );
 

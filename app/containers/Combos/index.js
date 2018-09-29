@@ -16,7 +16,6 @@ import { makeIsLoggedIn, selectUserId } from 'common/selectors';
 import { CommonContainer } from 'common/Styled';
 import List from 'components/common/List';
 import ListItem from 'components/combos/ListItem';
-
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
@@ -30,29 +29,6 @@ export class Combos extends React.PureComponent {
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
   }
-
-  // renderCombo = item => (
-  //   <List.Item
-  //     key={item.name}
-  //     actions={
-  //       this.props.userId !== item.submitted_by && [
-  //         <Rating
-  //           isRated={Boolean(item.is_rated_by_user)}
-  //           value={item.total_ratings}
-  //           onChange={getRatingOnChange(this.props, item)}
-  //         />,
-  //       ]
-  //     }
-  //   >
-  //     <List.Item.Meta
-  //       avatar={<Avatar src={getImgByCharacterName(item.name)} />}
-  //       title={<span>{item.name}</span>}
-  //       // Replace this with display name once implememted (Issue #4)
-  //       description={calculateDate(item.created_at)}
-  //     />
-  //     {item.combo}
-  //   </List.Item>
-  // );
 
   getRatingOnChange = combo => {
     const enabledFn = rating =>
