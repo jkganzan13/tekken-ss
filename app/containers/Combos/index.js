@@ -34,7 +34,8 @@ export class Combos extends React.PureComponent {
   getRatingOnChange = combo => {
     const enabledFn = rating =>
       this.props.actions.rateCombo({ id: combo.id, rating });
-    const disabledFn = () => this.props.notify.warning('You must be logged in to rate combos.');
+    const disabledFn = () =>
+      this.props.notify.warning('You must be logged in to rate combos.');
     return this.props.isLoggedIn ? enabledFn : disabledFn;
   };
 
