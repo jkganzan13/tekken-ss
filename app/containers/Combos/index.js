@@ -16,6 +16,7 @@ import { makeIsLoggedIn, selectUserId } from 'common/selectors';
 import { CommonContainer } from 'common/Styled';
 import List from 'components/common/List';
 import ListItem from 'components/combos/ListItem';
+import WithNotification from 'hocs/WithNotification';
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
@@ -33,7 +34,7 @@ export class Combos extends React.PureComponent {
   getRatingOnChange = combo => {
     const enabledFn = rating =>
       this.props.actions.rateCombo({ id: combo.id, rating });
-    const disabledFn = () => console.log('disabled');
+    const disabledFn = () => this.props.notify.warning('You must be logged in to rate combos.');
     return this.props.isLoggedIn ? enabledFn : disabledFn;
   };
 
@@ -72,6 +73,7 @@ Combos.propTypes = {
   userId: PropTypes.string,
   actions: PropTypes.object,
   filters: PropTypes.object,
+  notify: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -100,4 +102,5 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
+  WithNotification,
 )(Combos);
