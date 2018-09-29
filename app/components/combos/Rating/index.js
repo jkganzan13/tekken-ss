@@ -6,20 +6,26 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Rate } from 'antd';
+
 import * as Styled from './Styled';
 
 function Rating({ disabled, isRated, onChange, value }) {
   return (
     <Styled.RatingContainer>
-      <Rate
+      {/* <Rate
         disabled={disabled}
         count={1}
         value={isRated ? 1 : 0}
         onChange={onChange}
         allowClear
+      /> */}
+      <Styled.Icon
+        disabled={disabled}
+        isRated={isRated}
+        size="1.5em"
+        onClick={() => onChange(!isRated)}
       />
-      <span>{value}</span>
+      <Styled.Value>{value}</Styled.Value>
     </Styled.RatingContainer>
   );
 }

@@ -9,17 +9,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
-import { List, Avatar } from 'antd';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { notification } from 'utils/notifications';
 import ComboForm from 'components/ComboForm';
 import { makeIsLoggedIn, selectUserId } from 'common/selectors';
-import Rating from 'components/Rating';
-import DataList from 'components/DataList';
 import { CommonContainer } from 'common/Styled';
-import Filters from 'components/Filters';
+import List from 'components/common/List';
+import ListItem from 'components/combos/ListItem';
 
 import makeSelectCombos, {
   makeCombosFilters,
@@ -28,63 +24,56 @@ import makeSelectCombos, {
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
-import { getImgByCharacterName, calculateDate } from './util';
 import * as Styled from './Styled';
-
-const getRatingOnChange = (props, combo) => {
-  const enabledFn = rating => props.actions.rateCombo({ id: combo.id, rating });
-  const disabledFn = () =>
-    notification.warning(
-      'You are not logged in',
-      'Please login to rate combos.',
-    );
-  return props.isLoggedIn ? enabledFn : disabledFn;
-};
 
 export class Combos extends React.PureComponent {
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
   }
 
-  renderCombo = item => (
-    <List.Item
-      key={item.name}
-      actions={
-        this.props.userId !== item.submitted_by && [
-          <Rating
-            isRated={Boolean(item.is_rated_by_user)}
-            value={item.total_ratings}
-            onChange={getRatingOnChange(this.props, item)}
-          />,
-        ]
-      }
-    >
-      <List.Item.Meta
-        avatar={<Avatar src={getImgByCharacterName(item.name)} />}
-        title={<span>{item.name}</span>}
-        // Replace this with display name once implememted (Issue #4)
-        description={calculateDate(item.created_at)}
-      />
-      {item.combo}
-    </List.Item>
+  // renderCombo = item => (
+  //   <List.Item
+  //     key={item.name}
+  //     actions={
+  //       this.props.userId !== item.submitted_by && [
+  //         <Rating
+  //           isRated={Boolean(item.is_rated_by_user)}
+  //           value={item.total_ratings}
+  //           onChange={getRatingOnChange(this.props, item)}
+  //         />,
+  //       ]
+  //     }
+  //   >
+  //     <List.Item.Meta
+  //       avatar={<Avatar src={getImgByCharacterName(item.name)} />}
+  //       title={<span>{item.name}</span>}
+  //       // Replace this with display name once implememted (Issue #4)
+  //       description={calculateDate(item.created_at)}
+  //     />
+  //     {item.combo}
+  //   </List.Item>
+  // );
+
+  getRatingOnChange = combo => {
+    const enabledFn = rating =>
+      this.props.actions.rateCombo({ id: combo.id, rating });
+    const disabledFn = () => console.log('disabled');
+    return this.props.isLoggedIn ? enabledFn : disabledFn;
+  };
+
+  renderCombo = combo => (
+    <ListItem
+      key={combo.id}
+      combo={combo}
+      onRatingChange={this.getRatingOnChange(combo)}
+      userId={this.props.userId}
+    />
   );
 
   render() {
     return (
       <CommonContainer>
-        <Styled.Container>
-          <DataList
-            header={
-              <Filters
-                onChange={this.props.actions.filterCombos}
-                filters={this.props.filters}
-              />
-            }
-            dataSource={this.props.combos}
-            isLoading={this.props.isLoading}
-            renderItem={this.renderCombo}
-          />
-        </Styled.Container>
+        <List dataSource={this.props.combos} renderItem={this.renderCombo} />
         {this.props.isLoggedIn && (
           <ComboForm
             onSubmit={combo =>
