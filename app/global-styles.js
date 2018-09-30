@@ -15,6 +15,7 @@ injectGlobal`
   body {
     font-family: 'Mental Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: url('${background}') repeat top center;
+    overflow: hidden;
   }
 
   body.fontLoaded {

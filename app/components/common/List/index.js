@@ -5,8 +5,11 @@ import * as Styled from './Styled';
 
 const List = props => (
   <Styled.Container>
-    {props.dataSource.map(props.renderItem)}
-    {props.pagination && <Pager {...props.pagination} />}
+    {props.renderFilter && props.renderFilter()}
+    <Styled.ItemsContainer>
+      {props.dataSource.map(props.renderItem)}
+      {props.pagination && <Pager {...props.pagination} />}
+    </Styled.ItemsContainer>
   </Styled.Container>
 );
 
@@ -16,6 +19,7 @@ List.propTypes = {
   onPaginate: PropTypes.func,
   pagination: PropTypes.object,
   renderItem: PropTypes.func,
+  renderFilter: PropTypes.func,
 };
 
 export default List;

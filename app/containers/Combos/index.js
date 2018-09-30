@@ -13,9 +13,9 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import ComboForm from 'components/ComboForm';
 import { makeIsLoggedIn, selectUserId } from 'common/selectors';
-import { CommonContainer } from 'common/Styled';
 import List from 'components/common/List';
 import ListItem from 'components/combos/ListItem';
+import Filters from 'components/combos/Filters';
 import WithNotification from 'hocs/WithNotification';
 import makeSelectCombos, {
   makeCombosFilters,
@@ -48,10 +48,23 @@ export class Combos extends React.PureComponent {
     />
   );
 
+  renderFilter = () => (
+    <Filters
+      onSubmit={this.props.actions.queryCombos}
+      onFilterChange={this.props.actions.updateFilter}
+      filters={this.props.filters}
+    />
+  );
+
   render() {
     return (
-      <CommonContainer>
-        <List dataSource={this.props.combos} renderItem={this.renderCombo} />
+      <div>
+        <List
+          dataSource={this.props.combos}
+          isLoading={this.props.isLoading}
+          renderItem={this.renderCombo}
+          renderFilter={this.renderFilter}
+        />
         {this.props.isLoggedIn && (
           <ComboForm
             onSubmit={combo =>
@@ -62,7 +75,7 @@ export class Combos extends React.PureComponent {
             }
           />
         )}
-      </CommonContainer>
+      </div>
     );
   }
 }
