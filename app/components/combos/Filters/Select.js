@@ -4,11 +4,9 @@ import ReactSelect from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import { CHARACTER_NAMES } from 'constants/characters';
 import { LightGrey } from 'assets/styles/colors';
+import { getLabelValuesFromNames } from './util';
 
-const CHARACTER_OPTIONS = CHARACTER_NAMES.map(name => ({
-  label: name,
-  value: name,
-}));
+const CHARACTER_OPTIONS = getLabelValuesFromNames(CHARACTER_NAMES);
 
 const getValues = items => items.map(i => i.value);
 
@@ -49,12 +47,14 @@ const Select = props => (
     onChange={values => props.onChange(getValues(values))}
     placeholder="Select Character"
     styles={styles}
+    value={props.value}
     isMulti
   />
 );
 
 Select.propTypes = {
   onChange: PropTypes.func,
+  value: PropTypes.any,
 };
 
 export default Select;

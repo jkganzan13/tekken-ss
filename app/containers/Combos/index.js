@@ -17,6 +17,7 @@ import List from 'components/common/List';
 import ListItem from 'components/combos/ListItem';
 import Filters from 'components/combos/Filters';
 import WithNotification from 'hocs/WithNotification';
+import WithResponsive from 'hocs/WithResponsive';
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
@@ -27,6 +28,12 @@ import saga from './saga';
 import * as Styled from './Styled';
 
 export class Combos extends React.PureComponent {
+  state = {
+    isOpen: false,
+  };
+
+  toggleFilter = () => this.setState({ isOpen: !this.state.isOpen });
+
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
   }
@@ -48,13 +55,16 @@ export class Combos extends React.PureComponent {
     />
   );
 
-  renderFilter = () => (
-    <Filters
-      onSubmit={this.props.actions.queryCombos}
-      onFilterChange={this.props.actions.updateFilter}
-      filters={this.props.filters}
-    />
-  );
+  renderFilter = () =>
+    (this.props.isDesktop || this.state.isOpen) && (
+      <Filters
+        onSubmit={this.props.actions.queryCombos}
+        onFilterChange={this.props.actions.updateFilter}
+        filters={this.props.filters}
+        clearFilters={this.props.actions.clearFiltersAndQuery}
+        closeFilters={this.toggleFilter}
+      />
+    );
 
   render() {
     return (
@@ -64,6 +74,7 @@ export class Combos extends React.PureComponent {
           isLoading={this.props.isLoading}
           renderItem={this.renderCombo}
           renderFilter={this.renderFilter}
+          toggleFilter={this.toggleFilter}
         />
         {this.props.isLoggedIn && (
           <ComboForm
@@ -82,6 +93,7 @@ export class Combos extends React.PureComponent {
 
 Combos.propTypes = {
   combos: PropTypes.array.isRequired,
+  isDesktop: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isLoading: PropTypes.bool,
   userId: PropTypes.string,
@@ -117,4 +129,5 @@ export default compose(
   withSaga,
   withConnect,
   WithNotification,
+  WithResponsive,
 )(Combos);

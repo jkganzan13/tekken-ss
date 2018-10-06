@@ -23,7 +23,11 @@ const MobileNav = props => {
     <Styled.MobileNavContainer>
       <Styled.Logo src={logo} />
       <Menu right>
-        {ROUTES.map(route => <Link to={route.to}>{route.name}</Link>)}
+        {ROUTES.map(route => (
+          <Link key={route.name} to={route.to}>
+            {route.name}
+          </Link>
+        ))}
         <Divider />
         {LoggedInNav}
       </Menu>

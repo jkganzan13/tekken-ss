@@ -2,11 +2,12 @@ import { all, takeLatest, call, put, select } from 'redux-saga/effects';
 import request from 'utils/request';
 import {
   ADD_COMBO,
+  CLEAR_FILTERS_AND_QUERY,
   RATE_COMBO,
   QUERY_COMBOS,
   FILTER_COMBOS,
 } from './constants';
-import { updateCombos, updateFilter } from './actions';
+import { clearFilters, updateCombos, updateFilter } from './actions';
 import makeSelectCombos, { makeCombosFilters } from './selectors';
 import { getFilterQuery, updateRatingById } from './util';
 
@@ -48,11 +49,17 @@ export function* filterCombosSaga({ payload }) {
   yield call(queryCombosSaga);
 }
 
+export function* clearFiltersSaga() {
+  yield put(clearFilters());
+  yield call(queryCombosSaga);
+}
+
 // Individual exports for testing
 export default function* defaultSaga() {
   yield all([
     takeLatest(QUERY_COMBOS, queryCombosSaga),
     takeLatest(ADD_COMBO, addComboSaga),
+    takeLatest(CLEAR_FILTERS_AND_QUERY, clearFiltersSaga),
     takeLatest(RATE_COMBO, rateComboSaga),
     takeLatest(FILTER_COMBOS, filterCombosSaga),
   ]);

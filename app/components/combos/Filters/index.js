@@ -1,59 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Desktop } from 'components/common/Responsive';
-import Select from './Select';
+import WithResponsive from 'hocs/WithResponsive';
 import * as Styled from './Styled';
+import FilterItem from './FilterItem';
+import { getLabelValuesFromNames } from './util';
 
-const renderFilterByType = props => {
-  switch (props.type) {
-    case 'multiselect':
-      return (
-        <Select
-          onChange={value =>
-            props.onFilterChange({ key: props.filterKey, value })
-          }
-        />
-      );
-    default:
-      return (
-        <Styled.FilterInput
-          type="text"
-          value={props.value}
-          onChange={e =>
-            props.onFilterChange({
-              key: props.filterKey,
-              value: e.target.value,
-            })
-          }
-        />
-      );
-  }
-};
+const Filters = props => {
+  const Wrapper = props.isDesktop ? Styled.Filter : Styled.MobileFilter;
 
-const FilterItem = props => (
-  <Styled.FilterItem>
-    <Styled.FilterHeader>{props.label}</Styled.FilterHeader>
-    {renderFilterByType(props)}
-  </Styled.FilterItem>
-);
+  const closeFilterAndCall = fn => () => {
+    if (!props.isDesktop) props.closeFilters();
+    fn();
+  };
 
-FilterItem.propTypes = {
-  filterKey: PropTypes.string,
-  type: PropTypes.string,
-  label: PropTypes.string,
-  onFilterChange: PropTypes.func,
-  value: PropTypes.node,
-};
-
-const Filters = props => (
-  <Desktop>
-    <Styled.Filter>
-      <Styled.FilterTitle>FILTERS</Styled.FilterTitle>
+  return (
+    <Wrapper>
+      {!props.isDesktop && (
+        <Styled.CloseBtn onClick={props.closeFilters} size={40} />
+      )}
+      <Styled.FilterTitleContainer>
+        <Styled.FilterTitle>FILTERS</Styled.FilterTitle>
+        <Styled.Clear onClick={closeFilterAndCall(props.clearFilters)}>
+          Clear
+        </Styled.Clear>
+      </Styled.FilterTitleContainer>
       <FilterItem
         label="Name"
         filterKey="name"
         type="multiselect"
-        value={props.filters.name}
+        value={getLabelValuesFromNames(props.filters.name)}
         onFilterChange={props.onFilterChange}
       />
       <FilterItem
@@ -68,15 +43,20 @@ const Filters = props => (
         value={props.filters.damage}
         onFilterChange={props.onFilterChange}
       />
-      <Styled.Submit onClick={props.onSubmit}>Filter</Styled.Submit>
-    </Styled.Filter>
-  </Desktop>
-);
+      <Styled.Submit onClick={closeFilterAndCall(props.onSubmit)}>
+        Filter
+      </Styled.Submit>
+    </Wrapper>
+  );
+};
 
 Filters.propTypes = {
   filters: PropTypes.object,
+  isDesktop: PropTypes.bool,
   onFilterChange: PropTypes.func,
   onSubmit: PropTypes.func,
+  closeFilters: PropTypes.func,
+  clearFilters: PropTypes.func,
 };
 
-export default Filters;
+export default WithResponsive(Filters);

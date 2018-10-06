@@ -5,6 +5,8 @@
  */
 import {
   ADD_COMBO,
+  CLEAR_FILTERS_AND_QUERY,
+  CLEAR_FILTERS,
   RATE_COMBO,
   FILTER_COMBOS,
   QUERY_COMBOS,
@@ -54,5 +56,17 @@ export function updateCombos(payload) {
   return {
     type: UPDATE_COMBOS,
     payload,
+  };
+}
+
+export function clearFiltersAndQuery() {
+  return {
+    type: CLEAR_FILTERS_AND_QUERY,
+  };
+}
+
+export function clearFilters() {
+  return {
+    type: CLEAR_FILTERS,
   };
 }
