@@ -24,3 +24,6 @@ export const updateRatingById = (combos, id, rating) =>
     }
     return c;
   });
+
+export const isValidCombo = combo =>
+  !!combo.name && !!combo.damage && !!combo.combo;

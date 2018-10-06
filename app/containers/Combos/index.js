@@ -11,11 +11,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import ComboForm from 'components/ComboForm';
 import { makeIsLoggedIn, selectUserId } from 'common/selectors';
 import List from 'components/common/List';
 import ListItem from 'components/combos/ListItem';
 import Filters from 'components/combos/Filters';
+import ComboForm from 'components/combos/Form';
 import WithNotification from 'hocs/WithNotification';
 import WithResponsive from 'hocs/WithResponsive';
 import makeSelectCombos, {
@@ -26,6 +26,7 @@ import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
 import * as Styled from './Styled';
+import { isValidCombo } from './util';
 
 export class Combos extends React.PureComponent {
   state = {
@@ -66,6 +67,20 @@ export class Combos extends React.PureComponent {
       />
     );
 
+  submitCombo = combo => {
+    if (isValidCombo(combo)) {
+      this.props.actions.addCombo({
+        ...combo,
+        submitted_by: this.props.userId,
+      });
+    } else {
+      this.props.notify.error('You must fill all fields');
+    }
+  };
+
+  renderForm = () =>
+    this.props.isLoggedIn && <ComboForm onSubmit={this.submitCombo} />;
+
   render() {
     return (
       <div>
@@ -74,18 +89,9 @@ export class Combos extends React.PureComponent {
           isLoading={this.props.isLoading}
           renderItem={this.renderCombo}
           renderFilter={this.renderFilter}
+          renderForm={this.renderForm}
           toggleFilter={this.toggleFilter}
         />
-        {this.props.isLoggedIn && (
-          <ComboForm
-            onSubmit={combo =>
-              this.props.actions.addCombo({
-                ...combo,
-                submitted_by: this.props.userId,
-              })
-            }
-          />
-        )}
       </div>
     );
   }

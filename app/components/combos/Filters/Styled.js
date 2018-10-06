@@ -48,22 +48,6 @@ export const FilterInput = styled(Input)`
   border: 0;
 `;
 
-export const Submit = styled(Button)`
-  background: ${DarkYellow};
-  border-radius: 0;
-  color: black;
-  margin: 16px 0;
-  &:hover {
-    background: ${DarkYellow};
-    color: black;
-    opacity: 0.8;
-  }
-`;
-
-export const Clear = styled(FilterBtn)`
-  font-size: 16px;
-`;
-
 export const CloseBtn = styled(MdClose)`
   cursor: pointer;
   margin-bottom: 8px;

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import WithResponsive from 'hocs/WithResponsive';
+import { Primary, Transparent } from 'components/common/Buttons';
 import * as Styled from './Styled';
 import FilterItem from './FilterItem';
 import { getLabelValuesFromNames } from './util';
@@ -20,9 +21,9 @@ const Filters = props => {
       )}
       <Styled.FilterTitleContainer>
         <Styled.FilterTitle>FILTERS</Styled.FilterTitle>
-        <Styled.Clear onClick={closeFilterAndCall(props.clearFilters)}>
+        <Transparent onClick={closeFilterAndCall(props.clearFilters)}>
           Clear
-        </Styled.Clear>
+        </Transparent>
       </Styled.FilterTitleContainer>
       <FilterItem
         label="Name"
@@ -43,9 +44,7 @@ const Filters = props => {
         value={props.filters.damage}
         onFilterChange={props.onFilterChange}
       />
-      <Styled.Submit onClick={closeFilterAndCall(props.onSubmit)}>
-        Filter
-      </Styled.Submit>
+      <Primary onClick={closeFilterAndCall(props.onSubmit)}>Filter</Primary>
     </Wrapper>
   );
 };

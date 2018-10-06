@@ -12,8 +12,12 @@ import * as Styled from './Styled';
 const MobileNav = props => {
   const LoggedInNav = isAuthenticated() ? (
     [
-      <Link to="/me/combos">My Combos</Link>,
-      <Styled.LoginButton onClick={props.onLogout}>Logout</Styled.LoginButton>,
+      <Link key="my-combos" to="/me/combos">
+        My Combos
+      </Link>,
+      <Styled.LoginButton key="logout" onClick={props.onLogout}>
+        Logout
+      </Styled.LoginButton>,
     ]
   ) : (
     <LoginButton onLogin={props.onLogin} />

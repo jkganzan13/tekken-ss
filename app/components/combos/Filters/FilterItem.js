@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'components/common/Select/CharacterSelect';
 import * as Styled from './Styled';
-import Select from './Select';
 
 const renderFilterByType = props => {
   switch (props.type) {

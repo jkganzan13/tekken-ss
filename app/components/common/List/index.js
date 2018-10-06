@@ -1,23 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FiFilter } from 'react-icons/fi';
-import { Mobile } from 'components/common/Responsive';
-import Pager from './Pager';
+import WithResponsive from 'hocs/WithResponsive';
 import * as Styled from './Styled';
-
-const FilterButton = ({ onClick }) => (
-  <Styled.FilterBtn onClick={onClick}>
-    <FiFilter /> Filters
-  </Styled.FilterBtn>
-);
+import Pager from './Pager';
+import MobileButtons from './MobileButtons';
 
 const List = props => (
   <Styled.Container>
     {props.renderFilter && props.renderFilter()}
     <Styled.ItemsContainer>
-      <Mobile>
-        {props.renderFilter && <FilterButton onClick={props.toggleFilter} />}
-      </Mobile>
+      {props.renderForm()}
+      <MobileButtons {...props} />
       {props.dataSource.map(props.renderItem)}
       {props.pagination && <Pager {...props.pagination} />}
     </Styled.ItemsContainer>
@@ -30,8 +23,9 @@ List.propTypes = {
   onPaginate: PropTypes.func,
   pagination: PropTypes.object,
   renderItem: PropTypes.func,
+  renderForm: PropTypes.func,
   renderFilter: PropTypes.func,
   toggleFilter: PropTypes.func,
 };
 
-export default List;
+export default WithResponsive(List);
