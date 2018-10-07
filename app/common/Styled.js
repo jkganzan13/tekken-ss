@@ -21,3 +21,14 @@ export const AnchorButton = styled.button`
   cursor: pointer;
   float: right;
 `;
+
+export const Drawer = styled.div`
+  background: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 3rem;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1001;
+`;

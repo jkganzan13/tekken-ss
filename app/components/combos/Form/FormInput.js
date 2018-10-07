@@ -11,7 +11,11 @@ const FormInput = props => (
     <Styled.Label htmlFor={props.id} isInline={props.inline}>
       {props.label}
     </Styled.Label>
-    <props.inputComponent id={props.id} {...omitNonInputProps(props)} />
+    <props.inputComponent
+      id={props.id}
+      {...omitNonInputProps(props)}
+      isInline={props.inline}
+    />
   </FormGroup>
 );
 

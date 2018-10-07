@@ -3,6 +3,8 @@ import { Form as BsForm, Input as BsInput, Label as BsLabel } from 'reactstrap';
 
 const margin = 8;
 
+export const Container = styled.div``;
+
 export const Form = styled(BsForm)`
   ${props =>
     props.inline
@@ -13,20 +15,35 @@ export const Form = styled(BsForm)`
           flex-grow: 1;
         }
       }
-    ` : 'background:red;'};
+    `
+      : `
+      label {
+        font-size: 20px;
+      }
+      div.form-group {
+        margin: 1rem 0;
+      }
+    `};
 `;
+
+const calcInputWidth = props => {
+  if (props.isInline) {
+    return props.width
+      ? `${props.width}px !important`
+      : `calc(100% - 40px - ${margin}px) !important`;
+  }
+  return '';
+};
 
 export const Input = styled(BsInput)`
   border-radius: 0;
-  width: ${props =>
-    props.width
-      ? `${props.width}px !important`
-      : `calc(100% - 40px - ${margin}px) !important`};
+  width: ${calcInputWidth};
 `;
 
 export const Label = styled(BsLabel)`
   font-family: 'Mental Medium';
-  margin-right: ${props => (props.isInline ? `${margin}px` : '')};
+  margin-right: ${props => props.isInline && `${margin}px`};
+  margin-bottom: ${props => !props.isInline && '8px'};
 `;
 
 export const Title = styled.div`

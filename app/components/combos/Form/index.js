@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import R from 'ramda';
 import WithResponsive from 'hocs/WithResponsive';
-import { Primary } from 'components/common/Buttons';
+import { Close, Primary } from 'components/common/Buttons';
 import CharacterSelect from 'components/common/Select/CharacterSelect';
+import { Drawer } from 'common/Styled';
 import * as Styled from './Styled';
 import FormInput from './FormInput';
 
@@ -20,9 +21,7 @@ class ComboForm extends React.Component {
     this.setState({ [key]: e.target.value }),
   );
 
-  handleSelectChange = R.curry((key, selected) =>
-    this.setState({ [key]: selected.value }),
-  );
+  handleSelectChange = R.curry((key, value) => this.setState({ [key]: value }));
 
   submit = () => {
     this.props.onSubmit(this.state);
@@ -31,10 +30,16 @@ class ComboForm extends React.Component {
 
   render() {
     const isInline = this.props.isDesktop;
+    const Wrapper = this.props.isDesktop ? Styled.Container : Drawer;
 
     return (
-      <div>
-        <Styled.Title>POST COMBO</Styled.Title>
+      <Wrapper>
+        <Close
+          show={!this.props.isDesktop}
+          onClick={this.props.closeForm}
+          size={40}
+        />
+        <Styled.Title>SUBMIT COMBO</Styled.Title>
         <Styled.Form inline={isInline}>
           <FormInput
             id="name"
@@ -42,7 +47,7 @@ class ComboForm extends React.Component {
             onChange={this.handleSelectChange('name')}
             inputComponent={CharacterSelect}
             isMulti={false}
-            width={150}
+            width={isInline ? 150 : null}
             inline={isInline}
             closeMenuOnSelect
           />
@@ -64,12 +69,13 @@ class ComboForm extends React.Component {
           />
           <Primary onClick={this.submit}>Submit</Primary>
         </Styled.Form>
-      </div>
+      </Wrapper>
     );
   }
 }
 
 ComboForm.propTypes = {
+  closeForm: PropTypes.func,
   isDesktop: PropTypes.bool,
   onSubmit: PropTypes.func,
 };

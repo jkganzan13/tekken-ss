@@ -14,9 +14,9 @@ const getValues = value =>
 const CharacterSelect = props => (
   <Select
     options={CHARACTER_OPTIONS}
-    onChange={values => props.onChange(getValues(values))}
     placeholder="Select Character"
     {...props}
+    onChange={values => props.onChange(getValues(values))}
   />
 );
 

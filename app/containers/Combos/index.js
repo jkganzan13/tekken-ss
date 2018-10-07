@@ -30,10 +30,14 @@ import { isValidCombo } from './util';
 
 export class Combos extends React.PureComponent {
   state = {
-    isOpen: false,
+    isFilterOpen: false,
+    isFormOpen: false,
   };
 
-  toggleFilter = () => this.setState({ isOpen: !this.state.isOpen });
+  toggleFilter = () =>
+    this.setState({ isFilterOpen: !this.state.isFilterOpen });
+
+  toggleForm = () => this.setState({ isFormOpen: !this.state.isFormOpen });
 
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
@@ -57,7 +61,7 @@ export class Combos extends React.PureComponent {
   );
 
   renderFilter = () =>
-    (this.props.isDesktop || this.state.isOpen) && (
+    (this.props.isDesktop || this.state.isFilterOpen) && (
       <Filters
         onSubmit={this.props.actions.queryCombos}
         onFilterChange={this.props.actions.updateFilter}
@@ -79,7 +83,10 @@ export class Combos extends React.PureComponent {
   };
 
   renderForm = () =>
-    this.props.isLoggedIn && <ComboForm onSubmit={this.submitCombo} />;
+    (this.props.isDesktop || this.state.isFormOpen) &&
+    this.props.isLoggedIn && (
+      <ComboForm onSubmit={this.submitCombo} closeForm={this.toggleForm} />
+    );
 
   render() {
     return (
@@ -91,6 +98,7 @@ export class Combos extends React.PureComponent {
           renderFilter={this.renderFilter}
           renderForm={this.renderForm}
           toggleFilter={this.toggleFilter}
+          toggleForm={this.toggleForm}
         />
       </div>
     );

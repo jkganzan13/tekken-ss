@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import WithResponsive from 'hocs/WithResponsive';
-import { Primary, Transparent } from 'components/common/Buttons';
+import { Close, Primary, Transparent } from 'components/common/Buttons';
+import { Drawer } from 'common/Styled';
 import * as Styled from './Styled';
 import FilterItem from './FilterItem';
 import { getLabelValuesFromNames } from './util';
 
 const Filters = props => {
-  const Wrapper = props.isDesktop ? Styled.Filter : Styled.MobileFilter;
+  const Wrapper = props.isDesktop ? Styled.Filter : Drawer;
 
   const closeFilterAndCall = fn => () => {
     if (!props.isDesktop) props.closeFilters();
@@ -16,9 +17,7 @@ const Filters = props => {
 
   return (
     <Wrapper>
-      {!props.isDesktop && (
-        <Styled.CloseBtn onClick={props.closeFilters} size={40} />
-      )}
+      <Close show={!props.isDesktop} onClick={props.closeFilters} size={40} />
       <Styled.FilterTitleContainer>
         <Styled.FilterTitle>FILTERS</Styled.FilterTitle>
         <Transparent onClick={closeFilterAndCall(props.clearFilters)}>

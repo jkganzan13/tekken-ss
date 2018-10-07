@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import { Button, Input } from 'reactstrap';
-import { MdClose } from 'react-icons/md';
-import { DarkYellow } from 'assets/styles/colors';
-import { FilterBtn } from 'components/common/List/Styled';
+import { Input } from 'reactstrap';
 
 const filterWidth = 356;
 
@@ -11,17 +8,6 @@ export const Filter = styled.div`
   padding-left: 8px;
   padding-right: 8px;
   height: calc(100vh - 82px);
-`;
-
-export const MobileFilter = styled.div`
-  background: black;
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 3rem;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1001;
 `;
 
 export const FilterTitleContainer = styled.div`
@@ -46,10 +32,4 @@ export const FilterHeader = styled.div`
 export const FilterInput = styled(Input)`
   border-radius: 0;
   border: 0;
-`;
-
-export const CloseBtn = styled(MdClose)`
-  cursor: pointer;
-  margin-bottom: 8px;
-  margin-left: -10px;
 `;

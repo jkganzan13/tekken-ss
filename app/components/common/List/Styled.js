@@ -27,7 +27,7 @@ export const ItemsContainer = styled.div`
   overflow: auto;
 `;
 
-export const FilterBtn = styled(Button)`
+export const IconBtn = styled(Button)`
   align-items: center;
   background: transparent;
   border: 0;
@@ -44,6 +44,7 @@ export const FilterBtn = styled(Button)`
   &:hover {
     background-color: transparent !important;
     box-shadow: none !important;
+    color: ${DarkYellow};
   }
 
   svg {
@@ -52,10 +53,7 @@ export const FilterBtn = styled(Button)`
   }
 `;
 
-export const Drawer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
+export const MobileBtnsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
