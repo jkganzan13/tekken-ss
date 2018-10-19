@@ -9,13 +9,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
-import { Table, BackTop } from 'antd';
-import uuidv4 from 'uuid/v4';
+import Table from 'components/moveList/Table';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { CommonContainer } from 'common/Styled';
-import CharacterSelect from 'components/CharacterSelect';
+import CharacterSelect from 'components/common/Select/CharacterSelect';
 import * as Styled from './Styled';
 import makeSelectMoveList from './selectors';
 import reducer from './reducer';
@@ -25,46 +23,33 @@ import { moveListColumns } from './data';
 
 /* eslint-disable react/prefer-stateless-function */
 export class MoveList extends React.PureComponent {
-  componentDidUpdate() {
-    if (this.props.moveList.selected && this.tableRef) {
-      window.scrollTo({
-        top: this.tableRef.offsetTop - 10,
-        behavior: 'smooth',
-      });
-    }
-  }
+  onCharacterSelect = value => this.props.actions.selectCharacter(value);
 
   render() {
     return (
-      <CommonContainer>
-        <BackTop />
+      <Styled.Container>
         <CharacterSelect
-          onSelect={this.props.actions.selectCharacter}
-          selected={this.props.moveList.selected}
+          value={{
+            value: this.props.moveList.selected,
+            label: this.props.moveList.selected,
+          }}
+          onChange={this.onCharacterSelect}
+          closeMenuOnSelect
+          isMulti={false}
         />
-        {this.props.moveList.selectedMoves.length ? (
-          <Styled.Container
-            innerRef={el => {
-              this.tableRef = el;
-            }}
-          >
-            <Table
-              rowKey={uuidv4}
-              dataSource={this.props.moveList.selectedMoves}
-              columns={moveListColumns}
-              pagination={false}
-            />
-          </Styled.Container>
-        ) : null}
-      </CommonContainer>
+        <Table
+          moves={this.props.moveList.selectedMoves}
+          isLoading={this.props.isLoading}
+        />
+      </Styled.Container>
     );
   }
 }
 
 MoveList.propTypes = {
   actions: PropTypes.object,
-  loadMoveList: PropTypes.func,
   moveList: PropTypes.object,
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -6,10 +6,11 @@ import Pager from './Pager';
 import MobileButtons from './MobileButtons';
 
 const List = props => (
-  <Styled.Container>
+  <Styled.Container className="list">
     {props.renderFilter && props.renderFilter()}
-    <Styled.ItemsContainer>
-      {props.renderForm()}
+    {props.renderHeader && props.renderHeader()}
+    <Styled.ItemsContainer className="items">
+      {props.renderForm && props.renderForm()}
       <MobileButtons {...props} />
       {props.dataSource.map(props.renderItem)}
       {props.pagination && <Pager {...props.pagination} />}
@@ -22,6 +23,7 @@ List.propTypes = {
   isLoading: PropTypes.bool,
   onPaginate: PropTypes.func,
   pagination: PropTypes.object,
+  renderHeader: PropTypes.func,
   renderItem: PropTypes.func,
   renderForm: PropTypes.func,
   renderFilter: PropTypes.func,

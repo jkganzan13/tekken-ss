@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isLoggedIn } from 'common/selectors';
 import { Mobile } from 'components/common/Responsive';
 import { FiFilter, FiPlus } from 'react-icons/fi';
 import * as Styled from './Styled';
@@ -17,7 +18,8 @@ const MobileButtons = props => (
     {props.renderFilter && (
       <IconBtn onClick={props.toggleFilter} Icon={FiFilter} label="Filters" />
     )}
-    {props.renderForm && (
+    {props.renderForm &&
+      isLoggedIn() && (
       <IconBtn onClick={props.toggleForm} Icon={FiPlus} label="Submit" />
     )}
   </Mobile>

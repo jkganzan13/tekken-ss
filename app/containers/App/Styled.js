@@ -11,4 +11,6 @@ export const Content = styled(Layout.Content)`
 
 export const Container = styled.div`
   background: transparent;
+  height: 100%;
+  width: 100%;
 `;

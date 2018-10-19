@@ -16,12 +16,20 @@ const selectMoveListDomain = state => state.get('moveList', initialState);
  * Default selector used by MoveList
  */
 
+const getSelectedMoves = name => {
+  const key = name
+    .split(' ')
+    .join('-')
+    .toLowerCase();
+  return movelist[key] || [];
+};
+
 const makeSelectMoveList = () =>
   createSelector(selectMoveListDomain, substate => {
     const { selected } = substate.toJS();
     return {
       selected,
-      selectedMoves: movelist[selected] || [],
+      selectedMoves: getSelectedMoves(selected),
     };
   });
 
