@@ -1,32 +1,20 @@
 import styled from 'styled-components';
 import { CommonContainer } from 'common/Styled';
-import { Layout, List } from 'antd';
 
 export const Container = styled(CommonContainer)`
   display: flex;
 `;
 
-export const NewsContainer = styled(Layout.Content)`
+export const NewsContainer = styled.div`
   flex: 2;
   background: white;
   margin-right: 50px;
 `;
 
-export const SidestepContainer = styled(Layout.Content)`
+export const SidestepContainer = styled.div`
   flex: 1;
   background: white;
   overflow: auto;
 `;
 
-export const SidestepListItem = styled(List.Item)`
-  .ant-list-item-extra-wrap {
-    .ant-list-item-main {
-      order: 2;
-      margin-left: 58px;
-    }
-    .ant-list-item-extra {
-      order: 1;
-      margin-left: 0;
-    }
-  }
-`;
+export const SidestepListItem = styled.div``;
