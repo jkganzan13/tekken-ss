@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router';
-import { Layout } from 'antd';
 import injectReducer from 'utils/injectReducer';
 import {
   onAuthenticated,
@@ -31,10 +30,12 @@ import { selectProfile } from 'common/selectors';
 import HomePage from 'containers/HomePage/Loadable';
 import Combos from 'containers/Combos';
 import MoveList from 'containers/MoveList';
-import AppNav from 'components/AppNav';
+// import AppNav from 'components/AppNav';
+import AppNav from 'components/common/Nav';
 import * as comboActions from 'containers/Combos/actions';
 import reducer from './reducer';
 import * as appActions from './actions';
+import * as Styled from './Styled';
 
 /* eslint-disable react/prefer-stateless-function */
 class App extends React.PureComponent {
@@ -56,12 +57,11 @@ class App extends React.PureComponent {
   };
 
   render() {
-    const { props } = this;
     return (
-      <Layout>
+      <Styled.Container>
         <AppNav
-          profile={props.profile}
-          location={props.location}
+          profile={this.props.profile}
+          location={this.props.location}
           onLogin={this.login}
           onLogout={this.logout}
         />
@@ -71,7 +71,7 @@ class App extends React.PureComponent {
           <Route exact path="/moves" component={MoveList} />
           <Route component={HomePage} />
         </Switch>
-      </Layout>
+      </Styled.Container>
     );
   }
 }

@@ -14,7 +14,7 @@ import {
 
 export const initialState = fromJS({
   loading: false,
-  selected: '',
+  selected: 'Akuma',
   moves: {},
 });
 

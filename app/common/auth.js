@@ -29,7 +29,7 @@ export const getAuthToken = () => localStorage.getItem('access_token');
 export const isAuthenticated = () => {
   const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
   const notExpired = new Date().getTime() < expiresAt;
-  return notExpired && getAuthToken();
+  return notExpired && !!getAuthToken();
 };
 
 export const getProfileFromToken = (token = getAuthToken()) =>

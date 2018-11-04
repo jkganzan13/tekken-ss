@@ -3,7 +3,9 @@ import { isAuthenticated } from 'common/auth';
 
 const selectReducer = reducerName => state => state.get(reducerName);
 
-const makeIsLoggedIn = () => () => isAuthenticated();
+const isLoggedIn = () => isAuthenticated();
+
+const makeIsLoggedIn = () => isLoggedIn;
 
 const selectProfile = createSelector(
   selectReducer('app'),
@@ -12,4 +14,4 @@ const selectProfile = createSelector(
 
 const selectUserId = createSelector(selectProfile, profile => profile.sub);
 
-export { makeIsLoggedIn, selectProfile, selectUserId };
+export { isLoggedIn, makeIsLoggedIn, selectProfile, selectUserId };

@@ -9,18 +9,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose, bindActionCreators } from 'redux';
-import { List, Avatar } from 'antd';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { notification } from 'utils/notifications';
-import ComboForm from 'components/ComboForm';
 import { makeIsLoggedIn, selectUserId } from 'common/selectors';
-import Rating from 'components/Rating';
-import DataList from 'components/DataList';
-import { CommonContainer } from 'common/Styled';
-import Filters from 'components/Filters';
-
+import List from 'components/common/List';
+import ListItem from 'components/combos/ListItem';
+import Filters from 'components/combos/Filters';
+import ComboForm from 'components/combos/Form';
+import WithNotification from 'hocs/WithNotification';
+import WithResponsive from 'hocs/WithResponsive';
 import makeSelectCombos, {
   makeCombosFilters,
   makeIsLoading,
@@ -28,84 +25,95 @@ import makeSelectCombos, {
 import reducer from './reducer';
 import * as actions from './actions';
 import saga from './saga';
-import { getImgByCharacterName, calculateDate } from './util';
 import * as Styled from './Styled';
-
-const getRatingOnChange = (props, combo) => {
-  const enabledFn = rating => props.actions.rateCombo({ id: combo.id, rating });
-  const disabledFn = () =>
-    notification.warning(
-      'You are not logged in',
-      'Please login to rate combos.',
-    );
-  return props.isLoggedIn ? enabledFn : disabledFn;
-};
-
-const renderCombo = props => item => (
-  <List.Item
-    key={item.name}
-    actions={
-      props.userId !== item.submitted_by && [
-        <Rating
-          isRated={Boolean(item.is_rated_by_user)}
-          value={item.total_ratings}
-          onChange={getRatingOnChange(props, item)}
-        />,
-      ]
-    }
-  >
-    <List.Item.Meta
-      avatar={<Avatar src={getImgByCharacterName(item.name)} />}
-      title={<span>{item.name}</span>}
-      // Replace this with display name once implememted (Issue #4)
-      description={calculateDate(item.created_at)}
-    />
-    {item.combo}
-  </List.Item>
-);
+import { isValidCombo } from './util';
 
 export class Combos extends React.PureComponent {
+  state = {
+    isFilterOpen: false,
+    isFormOpen: false,
+  };
+
+  toggleFilter = () =>
+    this.setState({ isFilterOpen: !this.state.isFilterOpen });
+
+  toggleForm = () => this.setState({ isFormOpen: !this.state.isFormOpen });
+
   componentDidMount() {
     if (!this.props.combos.length) this.props.actions.queryCombos();
   }
+
+  getRatingOnChange = combo => {
+    const enabledFn = rating =>
+      this.props.actions.rateCombo({ id: combo.id, rating });
+    const disabledFn = () =>
+      this.props.notify.warning('You must be logged in to rate combos.');
+    return this.props.isLoggedIn ? enabledFn : disabledFn;
+  };
+
+  renderCombo = combo => (
+    <ListItem
+      key={combo.id}
+      combo={combo}
+      onRatingChange={this.getRatingOnChange(combo)}
+      userId={this.props.userId}
+    />
+  );
+
+  renderFilter = () =>
+    (this.props.isDesktop || this.state.isFilterOpen) && (
+      <Filters
+        onSubmit={this.props.actions.queryCombos}
+        onFilterChange={this.props.actions.updateFilter}
+        filters={this.props.filters}
+        clearFilters={this.props.actions.clearFiltersAndQuery}
+        closeFilters={this.toggleFilter}
+      />
+    );
+
+  submitCombo = combo => {
+    if (isValidCombo(combo)) {
+      this.props.actions.addCombo({
+        ...combo,
+        submitted_by: this.props.userId,
+      });
+    } else {
+      this.props.notify.error('You must fill all fields');
+    }
+  };
+
+  renderForm = () =>
+    (this.props.isDesktop || this.state.isFormOpen) &&
+    this.props.isLoggedIn && (
+      <ComboForm onSubmit={this.submitCombo} closeForm={this.toggleForm} />
+    );
+
   render() {
     return (
-      <CommonContainer>
-        <Styled.Container>
-          <DataList
-            header={
-              <Filters
-                onChange={this.props.actions.filterCombos}
-                filters={this.props.filters}
-              />
-            }
-            dataSource={this.props.combos}
-            isLoading={this.props.isLoading}
-            renderItem={renderCombo(this.props)}
-          />
-        </Styled.Container>
-        {this.props.isLoggedIn && (
-          <ComboForm
-            onSubmit={combo =>
-              this.props.actions.addCombo({
-                ...combo,
-                submitted_by: this.props.userId,
-              })
-            }
-          />
-        )}
-      </CommonContainer>
+      <div>
+        <List
+          dataSource={this.props.combos}
+          isLoading={this.props.isLoading}
+          renderItem={this.renderCombo}
+          renderFilter={this.renderFilter}
+          renderForm={this.renderForm}
+          toggleFilter={this.toggleFilter}
+          toggleForm={this.toggleForm}
+        />
+      </div>
     );
   }
 }
 
 Combos.propTypes = {
   combos: PropTypes.array.isRequired,
+  isDesktop: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isLoading: PropTypes.bool,
   userId: PropTypes.string,
   actions: PropTypes.object,
   filters: PropTypes.object,
+  notify: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -134,4 +142,6 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
+  WithNotification,
+  WithResponsive,
 )(Combos);

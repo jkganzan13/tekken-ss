@@ -136,9 +136,11 @@ module.exports = options => ({
     extensions: ['.js', '.jsx', '.react.js'],
     mainFields: ['browser', 'jsnext:main', 'main'],
     alias: {
-      images: path.resolve('app/images/'),
+      assets: path.resolve('app/assets/'),
       constants: path.resolve('app/constants/'),
       common: path.resolve('app/common/'),
+      hocs: path.resolve('app/hocs/'),
+      images: path.resolve('app/assets/images/'),
     },
   },
   devtool: options.devtool,
