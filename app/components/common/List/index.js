@@ -1,22 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import WithResponsive from 'hocs/WithResponsive';
+import { Spinner } from 'components/common/Icons';
 import * as Styled from './Styled';
 import Pager from './Pager';
 import MobileButtons from './MobileButtons';
 
-const List = props => (
-  <Styled.Container className="list">
-    {props.renderFilter && props.renderFilter()}
-    {props.renderHeader && props.renderHeader()}
-    <Styled.ItemsContainer className="items">
-      {props.renderForm && props.renderForm()}
-      <MobileButtons {...props} />
-      {props.dataSource.map(props.renderItem)}
-      {props.pagination && <Pager {...props.pagination} />}
-    </Styled.ItemsContainer>
-  </Styled.Container>
+const Loading = () => (
+  <Styled.LoadingContainer>
+    <Spinner />
+  </Styled.LoadingContainer>
 );
+
+const List = props =>
+  props.isLoading ? (
+    <Loading />
+  ) : (
+    <Styled.Container className="list">
+      {props.renderFilter && props.renderFilter()}
+      {props.renderHeader && props.renderHeader()}
+      <Styled.ItemsContainer className="items">
+        {props.renderForm && props.renderForm()}
+        <MobileButtons {...props} />
+        {props.dataSource.map(props.renderItem)}
+        {props.pagination && <Pager {...props.pagination} />}
+      </Styled.ItemsContainer>
+    </Styled.Container>
+  );
 
 List.propTypes = {
   dataSource: PropTypes.array,

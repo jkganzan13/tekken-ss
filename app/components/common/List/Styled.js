@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Button } from 'reactstrap';
 import { DarkYellow, LightGrey } from 'assets/styles/colors';
 
+const contentHeight = 'calc(100vh - 82px)';
+
 export const Container = styled.div`
   background-color: transparent;
   color: white;
@@ -23,7 +25,7 @@ export const Page = styled.div`
 
 export const ItemsContainer = styled.div`
   flex: 1;
-  height: calc(100vh - 82px);
+  height: ${contentHeight};
   overflow: auto;
 `;
 
@@ -56,4 +58,12 @@ export const IconBtn = styled(Button)`
 export const MobileBtnsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const LoadingContainer = styled.div`
+  height: ${contentHeight};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
