@@ -8,7 +8,6 @@ export const Container = styled.div`
   background-color: transparent;
   color: white;
   display: flex;
-  padding: 0.5rem 1rem;
 `;
 
 export const Pager = styled.div`
@@ -27,6 +26,7 @@ export const ItemsContainer = styled.div`
   flex: 1;
   height: ${contentHeight};
   overflow: auto;
+  padding-right: 1rem;
 `;
 
 export const IconBtn = styled(Button)`

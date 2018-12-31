@@ -5,7 +5,7 @@ const filterWidth = 356;
 
 export const Filter = styled.div`
   flex: 0 0 ${filterWidth}px;
-  padding-left: 8px;
+  padding-left: calc(1rem + 8px);
   padding-right: 8px;
   height: calc(100vh - 82px);
 `;

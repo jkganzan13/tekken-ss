@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from 'components/common/Avatar';
 import Rating from 'components/combos/Rating';
 import * as Styled from './Styled';
-import { getImgByCharacterName, calculateDate } from './util';
+import { calculateDate } from './util';
 
 const ListItem = ({ combo, onRatingChange, userId }) => (
   <Styled.Container>
-    <div>
-      <Avatar src={getImgByCharacterName(combo.name)} />
-    </div>
     <Styled.Name>
       <Styled.Text>{combo.name}</Styled.Text>
       <Styled.SubText>{calculateDate(combo.created_at)}</Styled.SubText>

@@ -24,6 +24,12 @@ const CHARACTERS = [
     ss: DIRECTION.LEFT,
   },
   {
+    key: 'armor-king',
+    name: 'Armor King',
+    // img: require('images/thumbnails/armorking_thumbnail.png'),
+    ss: DIRECTION.RIGHT,
+  },
+  {
     key: 'asuka',
     name: 'Asuka',
     img: require('images/thumbnails/asuka_thumbnail.png'),
@@ -161,12 +167,12 @@ const CHARACTERS = [
     img: require('images/thumbnails/lee_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
-  // {
-  //   key: 'lei',
-  //   name: 'Lei',
-  //   img: require('images/thumbnails/lei_thumbnail.png'),
-  //   ss: DIRECTION.LEFT,
-  // },
+  {
+    key: 'lei',
+    name: 'Lei',
+    // img: require('images/thumbnails/lei_thumbnail.png'),
+    ss: DIRECTION.RIGHT,
+  },
   {
     key: 'leo',
     name: 'Leo',
@@ -183,6 +189,12 @@ const CHARACTERS = [
     key: 'lucky-chloe',
     name: 'Lucky Chloe',
     img: require('images/thumbnails/luckychloe_thumbnail.png'),
+    ss: DIRECTION.LEFT,
+  },
+  {
+    key: 'marduk',
+    name: 'Marduk',
+    // img: require('images/thumbnails/marduk_thumbnail.png'),
     ss: DIRECTION.LEFT,
   },
   {
